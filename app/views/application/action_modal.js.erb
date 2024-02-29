@@ -1,0 +1,7 @@
+var inActionModal = true
+<% @source_model = params[:source_model] %>
+$('.action-modal-content').html("<%= j (render partial: params[:content]) %>");
+$('#action-modal').modal('show', {backdrop: 'static', keyboard: false});
+setTimeout( function() {
+$('.btn').removeClass('button--loading');
+}, 1000);

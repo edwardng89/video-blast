@@ -1,0 +1,64 @@
+<div class="ibox">
+  <!-- ibox body -->
+  <div class="ibox-body">
+    <div class="ibox-filters">
+      <p class="required-field">All fields marked with&nbsp;<span class="red-asterisk">*</span>&nbsp;are required</p>
+    </div>
+    <div class="ibox-content">
+      <!-- fieldset code here -->  
+      <div class="row mb20">
+        <!-- fields go here -->
+        <% if can_access_attribute?(:first_name) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :first_name, label: '<span></span> First Name'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:first_name) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:last_name) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :last_name, label: '<span></span> Last Name'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:last_name) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:gender) %>
+          <div class="col-sm-3">
+            <div class="form-group selectdiv">
+              <div class="control-wrapper">
+                <%= f.input :gender,
+                  as: :select, collection: select_list(Gender.all,
+                                         f.object.gender, 'enum'), label: '<span></span> Gender'.html_safe,
+                  input_html: { class: ' select2 form-control'  },
+                  readonly: cannot_modify_attribute?(:gender) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:birth_date) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :birth_date, as: :string, label: '<span></span> Birth Date'.html_safe,
+                  input_html: { class: ' form-control ', value: f.object&.birth_date&.strftime('%Y-%m-%d'),
+                                type: 'date'  },
+                  readonly: cannot_modify_attribute?(:birth_date) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <!-- nested form code here -->
+      <%= f.hidden_field :alt_list, value: @alt_list %>
+    </div>
+  </div>
+  <!-- /- ibox body -->
+</div>

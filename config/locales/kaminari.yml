@@ -1,0 +1,12 @@
+# Sample localization file for Kaminari. You can override these values in your app's locales file if you want.
+
+en:
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "No %{entry_name} found"
+          one: "Displaying <b>All</b> of <b> 1 %{entry_name}</b>"
+          other: "Displaying <b>All</b> of <b> %{count} %{entry_name}</b> "
+      more_pages:
+        display_entries: "Displaying <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total} %{entry_name}</b>"

@@ -1,6 +1,48 @@
-require "active_support/core_ext/integer/time"
+require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
+  # Graylog definition
+  if ENV['GRAYLOG_URL'].present?
+    config.lograge.enabled = true
+    config.logger = GELF::Logger.new(ENV['GRAYLOG_URL'], 12_201, 'WAN',
+                                     { host: ENV['APP_SELF_URL'], level: GELF::INFO })
+    config.lograge.custom_options = lambda do |event|
+      { current_user_id: event.payload[:uid],
+        current_user: event.payload[:current_user],
+        parameters: event.payload[:parameters],
+        referer: event.payload[:referer],
+        user_agent: event.payload[:user_agent],
+        user_ip: event.payload[:user_ip],
+        request_ip: event.payload[:request_ip],
+        exception: event.payload[:exception],
+        exception_object: event.payload[:exception_object] }
+    end
+  end
+
+  # Transient mailer setting
+  if ENV['TRANSIENT'] == 'true'
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = { address: 'localhost', port: 1025 }
+  elsif ENV['EXTERNAL_SMTP'].present?
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address: ENV['SMTP_SERVER'],
+      port: ENV['SMTP_PORT'],
+      domain: ENV['SMTP_DOMAIN'],
+      authentication: 'plain',
+      enable_starttls_auto: true,
+      user_name: ENV['SMTP_USER'],
+      password: ENV['SMTP_PASSWORD']
+    }
+  end
+
+  Rails.application.routes.default_url_options = { host: ENV['APP_SELF_URL'] }
+  config.action_mailer.default_url_options = { host: ENV['APP_SELF_URL'] }
+
+  # Subdomain length to account for .com.au or .oz.to
+  # If for some reason we have a system that runs on .com then use a custom initialiser to set this to 1
+  config.action_dispatch.tld_length = 2
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -53,16 +95,16 @@ Rails.application.configure do
 
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
-    .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
-    .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+                                       .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
+                                       .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # Info include generic and useful information about system operation, but avoids logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII). If you
   # want to log everything, set the level to "debug".
-  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
+  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'info')
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store

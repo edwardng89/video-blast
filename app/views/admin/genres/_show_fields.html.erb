@@ -1,0 +1,32 @@
+<!-- fieldset code here -->  
+<div class="row mb20">
+  <!-- fields go here -->
+  <% if can_access_attribute?(:name) %>
+    <div class="col-lg-4">
+      <div class="form-group">
+        <div class="control-wrapper">
+          <div class='input'>
+            <%= label_tag 'Name', 'Name:' %>
+            <div class="form-control read-only text-left">
+              <%= genre.name %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if can_access_attribute?(:active) %>
+    <div class="col-lg-2">
+      <div class="form-group">
+        <div class="control-wrapper">
+          <div class='input'>
+            <%= label_tag 'Active', 'Active:' %>
+            <div class="form-control read-only text-left">
+              <%= genre.active %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<!-- action list start -->
+<!-- action list end -->

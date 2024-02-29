@@ -28,4 +28,7 @@
 #       enabled: "ON"
 
 en:
+  boolean:
+    true: 'Yes'
+    false: 'No'
   hello: "Hello world"

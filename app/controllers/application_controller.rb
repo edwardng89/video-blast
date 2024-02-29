@@ -1,2 +1,4 @@
-class ApplicationController < ActionController::Base
+##
+# Base Level controller
+class ApplicationController < Tempest::ApplicationController
 end

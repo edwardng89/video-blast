@@ -1,0 +1,7 @@
+<div class="control-wrapper">
+  <div class="control-wrapper preview-images">
+    <% attached_records.each do |image| %>
+      <%= render partial: 'shared/image_fields', locals: { f: image, record_class: collection_class } %>
+    <% end %>
+  </div>
+</div>

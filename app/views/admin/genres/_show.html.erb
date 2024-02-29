@@ -1,0 +1,31 @@
+<!-- screen reference start -->
+<!--above-placeholders-->
+<div class="ibox">
+  <div class="ibox-header">
+    <div class="mvi-ibox-title" data-hook="portlet-bar-container">
+      <h3><%= render 'shared/title' %></h3>
+    </div>
+    <div class="mvi-ibox-buttons">
+      <% if can?(:update, @genre) %>
+        <%= link_to 'Edit', '#',
+                    class: 'btn btn-action pull-right single-show-edit btn-view',
+                    data: { 'form-url': edit_polymorphic_path([:admin, @genre]) } %>
+      <% end %>
+      <%= link_to polymorphic_path([:admin, genre.class.name.constantize]),
+          class: 'btn btn-close pull-right' do %>
+        Back
+      <% end %>
+    </div>
+  </div>
+  <div class="ibox-body">
+    <div class="ibox-content" data-hook="page-content-container">
+      <%= render partial: 'show_fields', locals: { genre: genre } %>
+    </div>
+  </div>
+</div>
+<!-- action buttons start -->
+<!-- child lists start -->
+<% if @genre.persisted? %>
+  <%= render partial: 'nested_list' %>
+<% end %>
+<!--bottom-placeholders-->

@@ -1,0 +1,40 @@
+<div class="ibox">
+  <!-- ibox body -->
+  <div class="ibox-body">
+    <div class="ibox-filters">
+      <p class="required-field">All fields marked with&nbsp;<span class="red-asterisk">*</span>&nbsp;are required</p>
+    </div>
+    <div class="ibox-content">
+      <!-- fieldset code here -->  
+      <div class="row mb20">
+        <!-- fields go here -->
+        <% if can_access_attribute?(:name) %>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :name, label: '<span></span> Name'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:name) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:active) %>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="control-wrapper mvi-checkboxes">
+                <%= f.input :active, label: '<span></span> Active'.html_safe,
+                  as: :boolean,
+                  input_html: { class: ' form-control text-left' },
+                  readonly: cannot_modify_attribute?(:active) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <!-- nested form code here -->
+      <%= f.hidden_field :alt_list, value: @alt_list %>
+    </div>
+  </div>
+  <!-- /- ibox body -->
+</div>

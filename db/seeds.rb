@@ -1,9 +1,23 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# Stop Seeds if any records exist in the database.
+# Note: This isn't ideal in the fact that if data is created in migrations then this would fail
+ActiveRecord::Base.connection.tables.each do |table|
+  table = begin
+    table.classify.constantize
+  rescue StandardError
+    nil
+  end
+  return if table && table.respond_to?(:any?) && table != User && table.any? # skip Devise, we can expect one there
+end
+# Run User setup regardless of whether seeds fail, should be safe to rerun
+user = User.where(email: 'developer@mindvision.com.au').find_or_initialize_by(
+  role: 'super_user', first_name: 'Mindvision', last_name: 'Interactive'
+)
+user.password = ENV['ADMIN_PASSWORD']
+user.password_confirmation = ENV['ADMIN_PASSWORD']
+user.save!(validate: false)
+
+# If something fails prefer to start again based on the above code to avoid re-runs
+ActiveRecord::Base.transaction do
+  # -- Model seeds start --
+  # -- Model seeds end --
+end

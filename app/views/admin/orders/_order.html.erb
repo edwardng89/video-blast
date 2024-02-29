@@ -1,0 +1,63 @@
+<tr  >
+  <!-- table columns here  -->
+  <% if can_access_attribute?(:order_number) %>
+    <td class="text-left   minimal">
+      <%= order.order_number %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:user) %>
+    <td class="text-left  ">
+      <%= order.user&.decorate&.to_s %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:created_at) %>
+    <td class="text-right   minimal">
+      <%= order.created_at %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:return_due) %>
+    <td class="text-right   minimal">
+      <%= order.return_due %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:status) %>
+    <td class="text-left   minimal">
+      <%= order.status.respond_to?(:text) ? 
+          order.status.text : order.status.to_s %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:order_movie_copies) %>
+    <td class="text-left  ">
+      <%= order.order_movie_copies&.map(&:to_s)&.join(', ') %>
+    </td>
+  <% end %>
+  <% if can?(:update,  (order.respond_to?(:object) ? order.object : order) ) %>
+    <% icon = '<i class="fas fa-pencil-alt" aria-hidden="true"></i>' %>
+    <% full_icon = '<i class="fas fa-edit" aria-hidden="true"></i>' %>
+    <% form_path = edit_polymorphic_path([:admin, order], alt_list: 'order' ) %>
+  <% elsif can?(:read,  (order.respond_to?(:object) ? order.object : order) )  %>
+    <% icon = '<i class="fas fa-search" aria-hidden="true"></i>' %>
+    <% full_icon = '
+      <span class="fa-stack">
+        <i class="fa fa-search fa-stack-1x"></i>
+      </span>' %>
+    <% form_path = polymorphic_path([:admin, order], alt_list: 'order') %>
+  <% end %>
+  <td class="minimal">
+    <%= link_to('<span class="fa-stack"><i class="fa fa-search fa-stack-1x"></i></span>'.html_safe,
+                polymorphic_path([:admin, order]),
+        title: 'Show order', class: 'index-link') %>
+    <% if can?(:update, (order.respond_to?(:object) ? order.object : order) ) %>
+      <%= link_to(full_icon.html_safe,
+                  edit_polymorphic_path([:admin, order]),
+          title: 'Edit order',
+          class: 'index-link') %>
+    <% end %>
+    <% if can?(:update, (order.respond_to?(:object) ? order.object : order) ) %>
+      <%= link_to icon.html_safe, '#', title: 'Edit order',
+                  class: 'index-link modal-btn modal-edit', data: { 'form-url': form_path, alt_list: action_name } %>
+    <% end %>
+  </td>
+  <!-- action buttons start -->
+  <!-- action buttons end -->
+</tr>

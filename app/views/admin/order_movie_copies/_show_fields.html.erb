@@ -1,0 +1,45 @@
+<!-- fieldset code here -->  
+<div class="row mb20">
+  <!-- fields go here -->
+  <% if can_access_attribute?(:order) %>
+    <div class="col-lg-4">
+      <div class="form-group">
+        <div class="control-wrapper">
+          <div class='input'>
+            <%= label_tag 'Order', 'Order:' %>
+            <div class="form-control read-only text-left">
+              <%= order_movie_copy.order %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if can_access_attribute?(:movie_copy) %>
+    <div class="col-lg-4">
+      <div class="form-group">
+        <div class="control-wrapper">
+          <div class='input'>
+            <%= label_tag 'Movie Copy', 'Movie Copy:' %>
+            <div class="form-control read-only text-left">
+              <%= order_movie_copy.movie_copy %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if can_access_attribute?(:returned_on) %>
+    <div class="col-lg-4">
+      <div class="form-group">
+        <div class="control-wrapper">
+          <div class='input'>
+            <%= label_tag 'Returned On', 'Returned On:' %>
+            <div class="form-control read-only text-left">
+              <%= order_movie_copy.returned_on %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<!-- action list start -->
+<!-- action list end -->

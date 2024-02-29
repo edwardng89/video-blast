@@ -1,0 +1,23 @@
+<h2 class="text-center">Change your password</h2>
+<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name),
+                    html: { method: :put }) do |f| %>
+  <div id="flashes" class="login-flash">
+    <%= render "devise/shared/error_messages", resource: resource %>
+  </div>
+  <%= f.input :reset_password_token, as: :hidden, input_html: { class: 'form-control' } %>
+  <%= f.full_error :reset_password_token %>
+  <div class="form-group">
+    <%= f.input :password, label: "New password", required: true, autofocus: true,
+                input_html: { class: 'form-control password-input user_password' } %>
+  </div>
+  <div class="form-group">
+    <%= f.input :password_confirmation, label: "Confirm your new password", required: true,
+                input_html: { class: 'form-control' } %>
+  </div>
+  <meter max="4" id="password-strength-meter"></meter>
+  <p class="input-container" id="password-strength-text"></p>
+  <div class='form-actions'>
+    <%= f.button :submit, 'Strong password required', disabled: true,
+                 class: 'btn btn-success password-btn block full-width m-b' %>
+  </div>
+<% end %>

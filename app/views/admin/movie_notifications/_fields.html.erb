@@ -1,0 +1,70 @@
+<div class="ibox">
+  <!-- ibox body -->
+  <div class="ibox-body">
+    <div class="ibox-filters">
+      <p class="required-field">All fields marked with&nbsp;<span class="red-asterisk">*</span>&nbsp;are required</p>
+    </div>
+    <div class="ibox-content">
+      <!-- fieldset code here -->  
+      <div class="row mb20">
+        <!-- fields go here -->
+        <% if can_access_attribute?(:movie_copy) %>
+          <div class="col-sm-3">
+            <div class="form-group selectdiv">
+              <div class="control-wrapper">
+                <%= f.association :movie_copy, collection: select_list(MovieCopy.all,
+                                           f.object.movie_copy, 'references', 'to_s'), label: '<span></span> Movie Copy'.html_safe,
+          input_html: {
+            class: ' select2 form-control',
+            data: { autocomplete_url: admin_movie_copies_path,
+                    selection_length: MovieCopy.all.count,
+                    text_identifier: 'to_s',
+                    max_length: ENV['LIST_MAX_RECORDS'].to_i > 0 ? ENV['LIST_MAX_RECORDS'].to_i : 50 }
+          }, readonly: cannot_modify_attribute?(:movie_copy) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:user) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= label_tag 'user', 'User' %>
+                <div class="read-only">
+                  <%= movie_notification.user&.decorate&.to_s %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:requested_on) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :requested_on, as: :string, label: '<span></span> Requested On'.html_safe,
+                  input_html: { class: ' form-control ', value: f.object&.requested_on&.strftime('%Y-%m-%d'),
+                                type: 'date'  },
+                  readonly: cannot_modify_attribute?(:requested_on) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:canceled_on) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :canceled_on, as: :string, label: '<span></span> Canceled On'.html_safe,
+                  input_html: { class: ' form-control ', value: f.object&.canceled_on&.strftime('%Y-%m-%d'),
+                                type: 'date'  },
+                  readonly: cannot_modify_attribute?(:canceled_on) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <!-- nested form code here -->
+      <%= f.hidden_field :alt_list, value: @alt_list %>
+    </div>
+  </div>
+  <!-- /- ibox body -->
+</div>

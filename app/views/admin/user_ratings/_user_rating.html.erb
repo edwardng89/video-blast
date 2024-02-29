@@ -1,0 +1,47 @@
+<tr  >
+  <!-- table columns here  -->
+  <% if can_access_attribute?(:rating) %>
+    <td class="text-right   minimal">
+      <%= user_rating.rating %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:movie) %>
+    <td class="text-left  ">
+      <%= user_rating.movie&.decorate&.to_s %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:user) %>
+    <td class="text-right  ">
+      <%= user_rating.user %>
+    </td>
+  <% end %>
+  <% if can?(:update,  (user_rating.respond_to?(:object) ? user_rating.object : user_rating) ) %>
+    <% icon = '<i class="fas fa-pencil-alt" aria-hidden="true"></i>' %>
+    <% full_icon = '<i class="fas fa-edit" aria-hidden="true"></i>' %>
+    <% form_path = edit_polymorphic_path([:admin, user_rating], alt_list: 'user_rating' ) %>
+  <% elsif can?(:read,  (user_rating.respond_to?(:object) ? user_rating.object : user_rating) )  %>
+    <% icon = '<i class="fas fa-search" aria-hidden="true"></i>' %>
+    <% full_icon = '
+      <span class="fa-stack">
+        <i class="fa fa-search fa-stack-1x"></i>
+      </span>' %>
+    <% form_path = polymorphic_path([:admin, user_rating], alt_list: 'user_rating') %>
+  <% end %>
+  <td class="minimal">
+    <%= link_to('<span class="fa-stack"><i class="fa fa-search fa-stack-1x"></i></span>'.html_safe,
+                polymorphic_path([:admin, user_rating]),
+        title: 'Show user_rating', class: 'index-link') %>
+    <% if can?(:update, (user_rating.respond_to?(:object) ? user_rating.object : user_rating) ) %>
+      <%= link_to(full_icon.html_safe,
+                  edit_polymorphic_path([:admin, user_rating]),
+          title: 'Edit user_rating',
+          class: 'index-link') %>
+    <% end %>
+    <% if can?(:update, (user_rating.respond_to?(:object) ? user_rating.object : user_rating) ) %>
+      <%= link_to icon.html_safe, '#', title: 'Edit user_rating',
+                  class: 'index-link modal-btn modal-edit', data: { 'form-url': form_path, alt_list: action_name } %>
+    <% end %>
+  </td>
+  <!-- action buttons start -->
+  <!-- action buttons end -->
+</tr>

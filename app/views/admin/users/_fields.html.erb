@@ -1,0 +1,172 @@
+<div class="ibox">
+  <!-- ibox body -->
+  <div class="ibox-body">
+    <div class="ibox-filters">
+      <p class="required-field">All fields marked with&nbsp;<span class="red-asterisk">*</span>&nbsp;are required</p>
+    </div>
+    <div class="ibox-content">
+      <!-- fieldset code here -->  
+      <div class="row mb20">
+        <!-- fields go here -->
+        <% if can_access_attribute?(:first_name) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :first_name, label: '<span></span> First Name'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:first_name) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:last_name) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :last_name, label: '<span></span> Last Name'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:last_name) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:gender) %>
+          <div class="col-sm-3">
+            <div class="form-group selectdiv">
+              <div class="control-wrapper">
+                <%= f.input :gender,
+                  as: :select, collection: select_list(Gender.all,
+                                         f.object.gender, 'enum'), label: '<span></span> Gender'.html_safe,
+                  input_html: { class: ' select2 form-control'  },
+                  readonly: cannot_modify_attribute?(:gender) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="row mb20">
+        <% if can_access_attribute?(:address_line_1) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :address_line_1, label: '<span></span> Address Line 1'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:address_line_1) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:address_line_2) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :address_line_2, label: '<span></span> Address Line 2'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:address_line_2) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:suburb) %>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :suburb, label: '<span></span> Suburb'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:suburb) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:state) %>
+          <div class="col-sm-2">
+            <div class="form-group selectdiv">
+              <div class="control-wrapper">
+                <%= f.input :state,
+                  as: :select, collection: select_list(State.all,
+                                         f.object.state, 'enum'), label: '<span></span> State'.html_safe,
+                  input_html: { class: ' select2 form-control'  },
+                  readonly: cannot_modify_attribute?(:state) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:postcode) %>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :postcode, label: '<span></span> Postcode'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:postcode) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="row mb20">
+        <% if can_access_attribute?(:email) %>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :email, label: '<span></span> Email'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:email) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="row mb20">
+        <% if can_access_attribute?(:role) %>
+          <div class="col-sm-3">
+            <div class="form-group selectdiv">
+              <div class="control-wrapper">
+                <%= f.input :role,
+                  as: :select, collection: select_list(AdminRole.all,
+                                         f.object.role, 'enum'), label: '<span></span> Role'.html_safe,
+                  input_html: { class: ' select2 form-control'  },
+                  readonly: cannot_modify_attribute?(:role) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:active) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper mvi-checkboxes">
+                <%= f.input :active, label: '<span></span> Active'.html_safe,
+                  as: :boolean,
+                  input_html: { class: ' form-control text-left' },
+                  readonly: cannot_modify_attribute?(:active) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:admin) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper mvi-checkboxes">
+                <%= f.input :admin, label: '<span></span> Admin'.html_safe,
+                  as: :boolean,
+                  input_html: { class: ' form-control text-left' },
+                  readonly: cannot_modify_attribute?(:admin) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <% if @user.persisted? %>
+        <div class="row mb20">
+          <div class="col-sm-12">
+            <%= link_to 'Reset Password', reset_password_admin_user_path(@user),
+        class: 'btn btn-save btn-with-confirm pull-right',
+        data: { confirm: 'Are you sure you want to reset the user password?' } %>
+          </div>
+        </div>
+      <% end %>
+      <!-- nested form code here -->
+      <%= f.hidden_field :alt_list, value: @alt_list %>
+    </div>
+  </div>
+  <!-- /- ibox body -->
+</div>

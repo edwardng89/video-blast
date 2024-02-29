@@ -1,0 +1,85 @@
+<div class="ibox">
+  <!-- ibox body -->
+  <div class="ibox-body">
+    <div class="ibox-filters">
+      <p class="required-field">All fields marked with&nbsp;<span class="red-asterisk">*</span>&nbsp;are required</p>
+    </div>
+    <div class="ibox-content">
+      <!-- fieldset code here -->  
+      <div class="row mb20">
+        <!-- fields go here -->
+        <% if can_access_attribute?(:to) %>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :to, label: '<span></span> To'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:to) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:from) %>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :from, label: '<span></span> From'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:from) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:subject) %>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :subject, label: '<span></span> Subject'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:subject) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:body) %>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :body, label: '<span></span> Body'.html_safe,
+                input_html: { class: ' form-control', spellcheck: true  },
+                  readonly: cannot_modify_attribute?(:body) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:sent_at) %>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :sent_at, as: :string, label: '<span></span> Sent At'.html_safe,
+          input_html: { class: ' form-control ', value: f.object&.sent_at&.strftime('%Y-%m-%dT%H:%M'),
+                        type: 'datetime-local' },
+          readonly: cannot_modify_attribute?(:sent_at) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if can_access_attribute?(:received_at) %>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :received_at, as: :string, label: '<span></span> Received At'.html_safe,
+          input_html: { class: ' form-control ', value: f.object&.received_at&.strftime('%Y-%m-%dT%H:%M'),
+                        type: 'datetime-local' },
+          readonly: cannot_modify_attribute?(:received_at) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <!-- nested form code here -->
+      <%= f.hidden_field :alt_list, value: @alt_list %>
+    </div>
+  </div>
+  <!-- /- ibox body -->
+</div>

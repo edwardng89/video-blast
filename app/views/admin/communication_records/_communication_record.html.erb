@@ -1,0 +1,49 @@
+<tr  >
+  <!-- table columns here  -->
+  <% if can_access_attribute?(:received_at) %>
+    <td class="text-right  ">
+      <%= communication_record.received_at %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:sent_at) %>
+    <td class="text-right  ">
+      <%= communication_record.sent_at %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:body) %>
+    <td class="text-left  ">
+      <%= strip_tags(communication_record.body) %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:subject) %>
+    <td class="text-left  ">
+      <%= communication_record.subject %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:from) %>
+    <td class="text-left  ">
+      <%= communication_record.from %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:to) %>
+    <td class="text-left  ">
+      <%= communication_record.to %>
+    </td>
+  <% end %>
+  <% if can?(:update,  (communication_record.respond_to?(:object) ? communication_record.object : communication_record) ) %>
+    <% icon = '<i class="fas fa-pencil-alt" aria-hidden="true"></i>' %>
+    <% full_icon = '<i class="fas fa-edit" aria-hidden="true"></i>' %>
+    <% form_path = edit_polymorphic_path([:admin, communication_record], alt_list: 'communication_record' ) %>
+  <% elsif can?(:read,  (communication_record.respond_to?(:object) ? communication_record.object : communication_record) )  %>
+    <% icon = '<i class="fas fa-search" aria-hidden="true"></i>' %>
+    <% full_icon = '
+      <span class="fa-stack">
+        <i class="fa fa-search fa-stack-1x"></i>
+      </span>' %>
+    <% form_path = polymorphic_path([:admin, communication_record], alt_list: 'communication_record') %>
+  <% end %>
+  <td class="minimal">
+  </td>
+  <!-- action buttons start -->
+  <!-- action buttons end -->
+</tr>

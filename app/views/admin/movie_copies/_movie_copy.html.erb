@@ -1,0 +1,58 @@
+<tr  >
+  <!-- table columns here  -->
+  <% if can_access_attribute?(:format) %>
+    <td class="text-left  " style="width: 30%">
+      <%= movie_copy.format.respond_to?(:text) ? 
+          movie_copy.format.text : movie_copy.format.to_s %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:rental_price) %>
+    <td class="text-right  ">
+      <%= humanized_money_with_symbol movie_copy.rental_price %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:copies) %>
+    <td class="text-right  ">
+      <%= movie_copy.copies %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:on_hand) %>
+    <td class="text-left  " style="width: auto">
+      <%= movie_copy.on_hand %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:active) %>
+    <td class="text-left   minimal">
+      <%= boolean_label(movie_copy.active, movie_copy.human_active) %>
+    </td>
+  <% end %>
+  <% if can?(:update,  (movie_copy.respond_to?(:object) ? movie_copy.object : movie_copy) ) %>
+    <% icon = '<i class="fas fa-pencil-alt" aria-hidden="true"></i>' %>
+    <% full_icon = '<i class="fas fa-edit" aria-hidden="true"></i>' %>
+    <% form_path = edit_polymorphic_path([:admin, movie_copy], alt_list: 'movie_copy' ) %>
+  <% elsif can?(:read,  (movie_copy.respond_to?(:object) ? movie_copy.object : movie_copy) )  %>
+    <% icon = '<i class="fas fa-search" aria-hidden="true"></i>' %>
+    <% full_icon = '
+      <span class="fa-stack">
+        <i class="fa fa-search fa-stack-1x"></i>
+      </span>' %>
+    <% form_path = polymorphic_path([:admin, movie_copy], alt_list: 'movie_copy') %>
+  <% end %>
+  <td class="minimal">
+    <%= link_to('<span class="fa-stack"><i class="fa fa-search fa-stack-1x"></i></span>'.html_safe,
+                polymorphic_path([:admin, movie_copy]),
+        title: 'Show movie_copy', class: 'index-link') %>
+    <% if can?(:update, (movie_copy.respond_to?(:object) ? movie_copy.object : movie_copy) ) %>
+      <%= link_to(full_icon.html_safe,
+                  edit_polymorphic_path([:admin, movie_copy]),
+          title: 'Edit movie_copy',
+          class: 'index-link') %>
+    <% end %>
+    <% if can?(:update, (movie_copy.respond_to?(:object) ? movie_copy.object : movie_copy) ) %>
+      <%= link_to icon.html_safe, '#', title: 'Edit movie_copy',
+                  class: 'index-link modal-btn modal-edit', data: { 'form-url': form_path, alt_list: action_name } %>
+    <% end %>
+  </td>
+  <!-- action buttons start -->
+  <!-- action buttons end -->
+</tr>

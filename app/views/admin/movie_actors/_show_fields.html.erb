@@ -1,0 +1,32 @@
+<!-- fieldset code here -->  
+<div class="row mb20">
+  <!-- fields go here -->
+  <% if can_access_attribute?(:movie) %>
+    <div class="col-lg-6">
+      <div class="form-group">
+        <div class="control-wrapper">
+          <div class='input'>
+            <%= label_tag 'Movie', 'Movie:' %>
+            <div class="form-control read-only text-left">
+              <%= movie_actor.movie %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if can_access_attribute?(:actor) %>
+    <div class="col-lg-6">
+      <div class="form-group">
+        <div class="control-wrapper">
+          <div class='input'>
+            <%= label_tag 'Actor', 'Actor:' %>
+            <div class="form-control read-only text-left">
+              <%= movie_actor.actor %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<!-- action list start -->
+<!-- action list end -->

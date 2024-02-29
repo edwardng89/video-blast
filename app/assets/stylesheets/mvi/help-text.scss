@@ -1,0 +1,101 @@
+@import 'light-theme-variables';
+//@import 'dark-theme-variables';
+
+.help-text--modal {
+  .modal-header {
+    display: block;
+    font-size: 18pt;
+    color: white;
+    a {
+      color: white;
+    }
+  }
+
+  .help-ctrls {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    .modal-crl-btns {
+      text-decoration: none;
+    }
+  }
+
+  .modal-header {
+    background-image: linear-gradient(360deg, $mindvision-blue, darken($mindvision-blue, 5%));
+  }
+
+  li {
+    color: $mindvision-dark-blue;
+    font-size: 12pt;
+    line-height: 30px;
+  }
+
+  .ui-resizable-handle {
+    z-index: 9000000 !important; //ensures it is always on top for clicking
+    width: 15px;
+    height: 20px;
+    margin-left: auto;
+
+    &:before {
+      font-family: "Font Awesome 6 Free";
+      content: "\f0dd";
+      font-weight: 600;
+      transform: rotate(315deg);
+      display: inline-block;
+    }
+  }
+
+  .help-text--show--title-container--name {
+    font-size: 14pt;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    color: $mindvision-dark-blue;
+    margin-bottom: 15px;
+    border-bottom: 1px solid $mindvision-blue;
+    justify-content: space-between;
+
+    .help-text--show-form--links {
+      float: none;
+      margin-left: 10px;
+    }
+  }
+
+  .help-crl-save {
+    position: relative;
+    font-size: 21pt;
+    top: 1px;
+    left: 25px;
+    background: none;
+    border: none;
+    color: $mindvision-dark-blue;
+  }
+
+  .help-btns {
+    font-size: 14pt;
+    letter-spacing: 3px;
+    font-weight: 1000;
+
+    .help-text--modal--link-index {
+      position: relative;
+      top: -1px;
+    }
+
+    .help-header-btn {
+      font-size: 16pt;
+    }
+
+    .close-help {
+      position: relative;
+      top: 2px;
+      font-size: 17pt;
+    }
+  }
+}
+
+.menu-help-btn {
+  font-size: 16pt;
+}

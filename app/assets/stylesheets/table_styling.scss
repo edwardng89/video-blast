@@ -1,0 +1,83 @@
+// Table style starts
+.table-user_rating-responsive {
+
+tr td:nth-child(1), tr td.total:nth-child(1), tr td:not(.group):nth-child(1) a {
+  width: 10%;
+
+}
+}
+.table-order_movie_copy-responsive {
+
+tr td:nth-child(3), tr td.total:nth-child(3), tr td:not(.group):nth-child(3) a {
+  width: 10%;
+
+}
+}
+.table-order-responsive {
+
+tr td:nth-child(1), tr td.total:nth-child(1), tr td:not(.group):nth-child(1) a {
+  width: 10%;
+
+}
+tr td:nth-child(3), tr td.total:nth-child(3), tr td:not(.group):nth-child(3) a {
+  width: 10%;
+
+}
+tr td:nth-child(4), tr td.total:nth-child(4), tr td:not(.group):nth-child(4) a {
+  width: 10%;
+
+}
+tr td:nth-child(5), tr td.total:nth-child(5), tr td:not(.group):nth-child(5) a {
+  width: 10%;
+
+}
+}
+.table-movie_copy-responsive {
+
+tr td:nth-child(1), tr td.total:nth-child(1), tr td:not(.group):nth-child(1) a {
+  width: 30%;
+
+}
+tr td:nth-child(4), tr td.total:nth-child(4), tr td:not(.group):nth-child(4) a {
+  width: auto;
+
+}
+tr td:nth-child(5), tr td.total:nth-child(5), tr td:not(.group):nth-child(5) a {
+  width: 10%;
+
+}
+}
+.table-movie-responsive {
+
+tr td:nth-child(1), tr td.total:nth-child(1), tr td:not(.group):nth-child(1) a {
+  width: 10%;
+
+}
+tr td:nth-child(3), tr td.total:nth-child(3), tr td:not(.group):nth-child(3) a {
+  width: 10%;
+
+}
+tr td:nth-child(4), tr td.total:nth-child(4), tr td:not(.group):nth-child(4) a {
+  width: 10%;
+
+}
+tr td:nth-child(6), tr td.total:nth-child(6), tr td:not(.group):nth-child(6) a {
+  width: 10%;
+
+}
+}
+.table-genre-responsive {
+
+tr td:nth-child(2), tr td.total:nth-child(2), tr td:not(.group):nth-child(2) a {
+  width: 10%;
+
+}
+}
+.table-actor-responsive {
+
+tr td:nth-child(2), tr td.total:nth-child(2), tr td:not(.group):nth-child(2) a {
+  width: 10%;
+
+}
+}
+// Table style ends

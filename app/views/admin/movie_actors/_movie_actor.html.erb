@@ -1,0 +1,42 @@
+<tr id="<%= movie_actor.sortable_id %>" >
+  <!-- table columns here  -->
+  <% if can_access_attribute?(:actor) %>
+    <td class="text-left  ">
+      <%= movie_actor.actor&.decorate&.to_s %>
+    </td>
+  <% end %>
+  <% if can_access_attribute?(:movie) %>
+    <td class="text-left  ">
+      <%= movie_actor.movie&.decorate&.to_s %>
+    </td>
+  <% end %>
+  <% if can?(:update,  (movie_actor.respond_to?(:object) ? movie_actor.object : movie_actor) ) %>
+    <% icon = '<i class="fas fa-pencil-alt" aria-hidden="true"></i>' %>
+    <% full_icon = '<i class="fas fa-edit" aria-hidden="true"></i>' %>
+    <% form_path = edit_polymorphic_path([:admin, movie_actor], alt_list: 'movie_actor' ) %>
+  <% elsif can?(:read,  (movie_actor.respond_to?(:object) ? movie_actor.object : movie_actor) )  %>
+    <% icon = '<i class="fas fa-search" aria-hidden="true"></i>' %>
+    <% full_icon = '
+      <span class="fa-stack">
+        <i class="fa fa-search fa-stack-1x"></i>
+      </span>' %>
+    <% form_path = polymorphic_path([:admin, movie_actor], alt_list: 'movie_actor') %>
+  <% end %>
+  <td class="minimal">
+    <%= link_to('<span class="fa-stack"><i class="fa fa-search fa-stack-1x"></i></span>'.html_safe,
+                polymorphic_path([:admin, movie_actor]),
+        title: 'Show movie_actor', class: 'index-link') %>
+    <% if can?(:update, (movie_actor.respond_to?(:object) ? movie_actor.object : movie_actor) ) %>
+      <%= link_to(full_icon.html_safe,
+                  edit_polymorphic_path([:admin, movie_actor]),
+          title: 'Edit movie_actor',
+          class: 'index-link') %>
+    <% end %>
+    <% if can?(:update, (movie_actor.respond_to?(:object) ? movie_actor.object : movie_actor) ) %>
+      <%= link_to icon.html_safe, '#', title: 'Edit movie_actor',
+                  class: 'index-link modal-btn modal-edit', data: { 'form-url': form_path, alt_list: action_name } %>
+    <% end %>
+  </td>
+  <!-- action buttons start -->
+  <!-- action buttons end -->
+</tr>

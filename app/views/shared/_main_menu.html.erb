@@ -1,0 +1,77 @@
+<ul id="gn-menu" class="gn-menu-main">
+  <li class="gn-trigger">
+    <a class="gn-icon gn-icon-menu"><span>Menu</span></a>
+    <nav class="gn-menu-wrapper">
+      <div class="gn-scroller">
+        <ul class="gn-menu">
+          <% if can?(:read, Order)  %>
+            <li class="menu-option <%= is_active_controller('orders') %>">
+              <%= link_to admin_orders_path do %>
+                <i class="fa fa-fw fa-angle-double-right"></i>
+                Order
+              <% end %>
+            </li>
+          <% end %>
+          <% if can?(:read, Movie)  %>
+            <li class="menu-option <%= is_active_controller('movies') %>">
+              <%= link_to admin_movies_path do %>
+                <i class="fa fa-fw fa-angle-double-right"></i>
+                Movie
+              <% end %>
+            </li>
+          <% end %>
+          <% if can?(:read, User)  %>
+            <li class="menu-option <%= is_active_controller('users') %>">
+              <%= link_to admin_users_path do %>
+                <i class="fa fa-fw fa-angle-double-right"></i>
+                User
+              <% end %>
+            </li>
+          <% end %>
+          <% if can?(:view_lookup, User) %>
+            <li class="menu-option submenu-header">
+              <%= link_to '"#"', class: 'main-nav-item' do %>
+                <i class="fa fa-fw fa-angle-double-right"></i>
+                Lookup
+              <% end %>
+              <ul class="gn-submenu">
+                <% if can?(:read, Actor)  %>
+                  <li class="menu-option <%= is_active_controller('actors') %>">
+                    <%= link_to admin_actors_path do %>
+                      <i class="fa fa-fw fa-angle-double-right"></i>
+                      Actor
+                    <% end %>
+                  </li>
+                <% end %>
+                <% if can?(:read, Genre)  %>
+                  <li class="menu-option <%= is_active_controller('genres') %>">
+                    <%= link_to admin_genres_path do %>
+                      <i class="fa fa-fw fa-angle-double-right"></i>
+                      Genre
+                    <% end %>
+                  </li>
+                <% end %>
+                <!-- nav sub menu here -->
+              </ul>
+            </li>
+          <% end %>
+          <!-- nav menu here -->
+        </ul>
+      </div>
+    </nav>
+  </li>
+  <li class='header-logo-container'>
+    <div class='header-logo'>
+      <%= link_to '', admin_root_path, class: 'menu-logo' %>
+    </div>
+  </li>
+  <!--  optional top menu items-->
+  <!--    <li>-->
+  <!--      <a href="#"><span>Test 2</span></a>-->
+  <!--    </li>-->
+  <li class="logout-btn">
+    <%= link_to destroy_user_session_path, class: 'codrops-icon codrops-icon-drop', method: :delete do %>
+      [<%= current_user.to_s %>] Log Out
+    <% end %>
+  </li>
+</ul>

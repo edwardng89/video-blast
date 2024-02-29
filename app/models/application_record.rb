@@ -1,3 +1,3 @@
-class ApplicationRecord < ActiveRecord::Base
+class ApplicationRecord < Tempest::ApplicationRecord
   primary_abstract_class
 end

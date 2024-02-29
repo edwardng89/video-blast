@@ -1,0 +1,47 @@
+// Custom CSS rules to improve jquery UI calendar for inline editing
+.editable-inline {
+  .editable-input {
+    position: relative;
+    input.hasDatepicker {
+      width: 8em;
+      padding-right: 14px;
+    }
+    img.ui-datepicker-trigger {
+      position: absolute;
+      top: 4px;
+      right: 1px;
+      object-fit: none;
+      object-position: -112px -112px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+.ui-datepicker {
+  width: 13em;
+  padding: 0.1em 0.1em 0;
+
+  .ui-datepicker-header {
+    padding: 0.1em 0;
+  }
+
+  .ui-datepicker-title select {
+    font-size: 0.8em;
+  }
+
+  table {
+    font-size: 0.8em;
+    margin: 0 0 0.1em;
+
+    th {
+      font-size: 1em;
+      padding: 0.3em 0.1em;
+    }
+
+    td {
+      span, a {
+        padding: 0.1em;
+      }
+    }
+  }
+}

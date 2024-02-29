@@ -1,0 +1,58 @@
+<!-- fieldset code here -->  
+<div class="row mb20">
+  <!-- fields go here -->
+  <% if can_access_attribute?(:movie_copy) %>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <div class="control-wrapper">
+          <div class='input'>
+            <%= label_tag 'Movie Copy', 'Movie Copy:' %>
+            <div class="form-control read-only text-left">
+              <%= movie_notification.movie_copy %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if can_access_attribute?(:user) %>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <div class="control-wrapper">
+          <div class='input'>
+            <%= label_tag 'User', 'User:' %>
+            <div class="form-control read-only text-left">
+              <%= movie_notification.user %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if can_access_attribute?(:requested_on) %>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <div class="control-wrapper">
+          <div class='input'>
+            <%= label_tag 'Requested On', 'Requested On:' %>
+            <div class="form-control read-only text-left">
+              <%= movie_notification.requested_on %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if can_access_attribute?(:canceled_on) %>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <div class="control-wrapper">
+          <div class='input'>
+            <%= label_tag 'Canceled On', 'Canceled On:' %>
+            <div class="form-control read-only text-left">
+              <%= movie_notification.canceled_on %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<!-- action list start -->
+<!-- action list end -->

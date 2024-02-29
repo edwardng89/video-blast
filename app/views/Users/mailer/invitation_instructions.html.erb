@@ -1,0 +1,10 @@
+<p>Hello <%= @resource.email %>
+  <p>
+    <p>The Video Blast team are pleased to offer you privileged access.</p>
+    <p>To activate your access account please click on the link below and set up your secure password.</p>
+    <p><%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token) %></p>
+    <p>If you don't wish access to Video Blast, please ignore this email.</p>
+    <p>Regards,</p>
+    <p>The team at Video Blast</p>
+    <p><%= image_tag "#{ENV['APP_SELF_URL']}/#{asset_url('logo.png')}".html_safe %></p>
+    <p><a href="<%=ENV['APP_SELF_URL'] %>"><%=ENV['APP_SELF_URL'] %></a></p>
