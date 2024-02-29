@@ -47,20 +47,20 @@ class Tempest::AdminController < ApplicationController
   end
 
 
-  before_action :set__from_subdomain
-
-  def set__from_subdomain
-    _path = request.subdomains[0] # use lvh.me locally and add to config.hosts in development.rb
-
-    # To handle different naming of sub domain column
-    sub_domain_column = (.column_names & %w[subdomain sub_domain])&.first
-    return unless sub_domain_column.present?
-
-    @subdomain_ = .find_by("#{sub_domain_column}": _path)
-    return unless @subdomain_
-
-    session[:current__id] = @subdomain_&.id
-  end
+  # before_action :set__from_subdomain
+  #
+  # def set__from_subdomain
+  #   _path = request.subdomains[0] # use lvh.me locally and add to config.hosts in development.rb
+  #
+  #   # To handle different naming of sub domain column
+  #   sub_domain_column = (.column_names & %w[subdomain sub_domain])&.first
+  #   return unless sub_domain_column.present?
+  #
+  #   @subdomain_ = .find_by("#{sub_domain_column}": _path)
+  #   return unless @subdomain_
+  #
+  #   session[:current__id] = @subdomain_&.id
+  # end
 
 
   ##
@@ -100,9 +100,9 @@ class Tempest::AdminController < ApplicationController
   ##
   # create_settings when none exist
   def create_settings
-    if can?(:manage, Setting)
-      Setting.create if Setting.all.first.nil?
-    end
+    # if can?(:manage, Setting)
+    #   Setting.create if Setting.all.first.nil?
+    # end
   end
 
 

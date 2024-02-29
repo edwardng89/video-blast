@@ -5,7 +5,7 @@
       <p class="required-field">All fields marked with&nbsp;<span class="red-asterisk">*</span>&nbsp;are required</p>
     </div>
     <div class="ibox-content">
-      <!-- fieldset code here -->  
+      <!-- fieldset code here -->
       <div class="row mb20">
         <!-- fields go here -->
         <% if can_access_attribute?(:title) %>
@@ -90,8 +90,7 @@
           <div class="col-sm-6">
             <div class="form-group">
               <div class="control-wrapper">
-                <%= f.input :genre_ids,
-                  as: :, collection: Genre.all, label: '<span></span> Genres'.html_safe,
+                <%= f.input :genre_ids, as: :select, collection: Genre.all, label: '<span></span> Genres'.html_safe,
                   input_html: { class: ' select2 form-control'  },
                   readonly: cannot_modify_attribute?(:genre_ids) %>
               </div>

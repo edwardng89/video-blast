@@ -12,8 +12,8 @@ end
 user = User.where(email: 'developer@mindvision.com.au').find_or_initialize_by(
   role: 'super_user', first_name: 'Mindvision', last_name: 'Interactive'
 )
-user.password = ENV['ADMIN_PASSWORD']
-user.password_confirmation = ENV['ADMIN_PASSWORD']
+user.password = 'password'
+user.password_confirmation = 'password'
 user.save!(validate: false)
 
 # If something fails prefer to start again based on the above code to avoid re-runs

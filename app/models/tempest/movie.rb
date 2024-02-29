@@ -14,7 +14,7 @@ class Tempest::Movie < ApplicationRecord
 
   mount_uploader :cover, FileUploader
 
-  has_and_belongs_to_many :genres, class_name: '::Genre'
+  has_and_belongs_to_many :genres, class_name: '::Genre', join_table: 'movie_genres'
 
   has_many :movie_actors, class_name: '::MovieActor'
 
