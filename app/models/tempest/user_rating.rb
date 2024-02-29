@@ -1,5 +1,5 @@
 ##
-#
+# User Rating
 class Tempest::UserRating < ApplicationRecord
   acts_as_paranoid
   stampable optional: true
@@ -14,6 +14,14 @@ class Tempest::UserRating < ApplicationRecord
   # -- Scope methods end --
 
   # -- Sort methods start --
+
+  ##
+  # +SortOption+ Sort Method
+  # @!scope class
+  # @return (Sort Option)
+  sort_option :rating, lambda {
+    order(Arel.sql('(user_ratings.rating)'))
+  }
   # -- Sort methods end --
 
   # -- Instance methods start --

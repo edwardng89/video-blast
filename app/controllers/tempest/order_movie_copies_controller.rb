@@ -1,4 +1,5 @@
 class Tempest::OrderMovieCopiesController < AdminController
+  has_scope :in_order, as: :sort, allow_blank: true, default: 'order'
   has_scope :reverse_order, type: :boolean
   load_and_authorize_resource
   respond_to :html

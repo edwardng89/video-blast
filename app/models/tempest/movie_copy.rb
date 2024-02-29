@@ -1,5 +1,5 @@
 ##
-#
+# Movie Copy
 class Tempest::MovieCopy < ApplicationRecord
   include ClassyEnum::ActiveRecord
   classy_enum_attr :format, class_name: 'Format', allow_blank: true,
@@ -24,6 +24,14 @@ class Tempest::MovieCopy < ApplicationRecord
   # -- Scope methods end --
 
   # -- Sort methods start --
+
+  ##
+  # +SortOption+ Sort Method
+  # @!scope class
+  # @return (Sort Option)
+  sort_option :format, lambda {
+    order(Arel.sql('LOWER(movie_copies.format)'))
+  }
   # -- Sort methods end --
 
   humanize :active, boolean: true

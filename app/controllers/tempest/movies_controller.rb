@@ -1,4 +1,5 @@
 class Tempest::MoviesController < AdminController
+  has_scope :in_order, as: :sort, allow_blank: true, default: 'title'
   has_scope :reverse_order, type: :boolean
   load_and_authorize_resource
   respond_to :html
@@ -73,9 +74,6 @@ class Tempest::MoviesController < AdminController
     @alt_list = params[:alt_list]
 
     @title = 'New Movie'
-    return unless request.xhr?
-
-    render partial: 'quick_edit_form'
   end
 
   def create
@@ -84,46 +82,25 @@ class Tempest::MoviesController < AdminController
     respond_to do |format|
       if @movie.save
         format.html do
-          if request.xhr?
-            row_partial = movie_params[:alt_list].present? ? movie_params[:alt_list] : 'movie'
-            render partial: row_partial, locals: { "#{row_partial}": @movie }, status: 200
-          else
-
-            redirect_to edit_admin_movie_path(@movie)
-
-          end
+          redirect_to edit_admin_movie_path(@movie)
         end
+
         format.json do
           render json: { 'record_id': @movie&.id }
         end
+
       else
         format.html do
-          if request.xhr?
-            render partial: 'quick_edit_form', status: 422
-          else
-            @title = 'New Movie'
-            render action: :new
-          end
+          @title = 'New Movie'
+          render action: :new
         end
-
-        format.json do
-          render json: { 'record_id': @movie&.id }
-        end
-
       end
     end
   end
 
   def edit
     @title = "Edit #{@movie}"
-    @alt_list = params[:alt_list]
-    return unless request.xhr?
-
-    if params[:single_show_edit]
-      render partial: 'form'
-    else
-      render partial: 'quick_edit_form'
-    end
+    render partial: 'form' if request.xhr? && params[:single_show_edit]
   end
 
   def update
@@ -132,30 +109,13 @@ class Tempest::MoviesController < AdminController
     respond_to do |format|
       if @movie.update(movie_params)
         format.html do
-          if request.xhr?
-            row_partial = movie_params[:alt_list].present? ? movie_params[:alt_list] : 'movie'
-            render partial: row_partial, locals: { "#{row_partial}": @movie }, status: 200
-          else
-
-            redirect_to edit_admin_movie_path(@movie), notice: 'Movie was successfully updated.'
-
-          end
+          redirect_to edit_admin_movie_path(@movie), notice: 'Movie was successfully updated.'
         end
-
-        format.json do
-          render json: { 'record_id': @movie&.id }
-        end
-
       else
         format.html do
-          if request.xhr?
-            render partial: 'quick_edit_form', status: 422
-          else
-            @title = "Edit #{@movie}"
-            render action: :edit
-          end
+          @title = "Edit #{@movie}"
+          render action: :edit
         end
-        format.json { render json: @movie.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -1,4 +1,5 @@
 class Tempest::OrdersController < AdminController
+  has_scope :in_order, as: :sort, allow_blank: true, default: 'return_due'
   has_scope :reverse_order, type: :boolean
   load_and_authorize_resource :user
   load_and_authorize_resource through: [:user], shallow: true

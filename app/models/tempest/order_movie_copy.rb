@@ -1,5 +1,5 @@
 ##
-#
+# Order Movie Copy
 class Tempest::OrderMovieCopy < ApplicationRecord
   acts_as_paranoid
   stampable optional: true
@@ -13,6 +13,14 @@ class Tempest::OrderMovieCopy < ApplicationRecord
   # -- Scope methods end --
 
   # -- Sort methods start --
+
+  ##
+  # +SortOption+ Sort Method
+  # @!scope class
+  # @return (Sort Option)
+  sort_option :order, lambda {
+    order(Arel.sql('(order_movie_copies.order_id)'))
+  }
   # -- Sort methods end --
 
   # -- Instance methods start --

@@ -1,5 +1,5 @@
 ##
-#
+# Actor
 class Tempest::Actor < ApplicationRecord
   include ClassyEnum::ActiveRecord
   classy_enum_attr :gender, class_name: 'Gender', allow_blank: true,
@@ -22,6 +22,14 @@ OR actors.last_name ILIKE :query", query: "%#{query}%")
   # -- Scope methods end --
 
   # -- Sort methods start --
+
+  ##
+  # +SortOption+ Sort Method
+  # @!scope class
+  # @return (Sort Option)
+  sort_option :first_name, lambda {
+    order(Arel.sql('LOWER(actors.first_name)'))
+  }
   # -- Sort methods end --
 
   # -- Instance methods start --

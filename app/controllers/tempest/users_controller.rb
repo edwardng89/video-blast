@@ -1,4 +1,5 @@
 class Tempest::UsersController < AdminController
+  has_scope :in_order, as: :sort, allow_blank: true, default: 'first_name'
   has_scope :reverse_order, type: :boolean
   load_and_authorize_resource
   respond_to :html
@@ -50,9 +51,6 @@ class Tempest::UsersController < AdminController
         end
       end
       # -- index_formats_starts --
-      format.xls do
-        render xls: @users
-      end
       # -- index_formats_ends --
     end
   end
@@ -73,9 +71,6 @@ class Tempest::UsersController < AdminController
     @alt_list = params[:alt_list]
 
     @title = 'New User'
-    return unless request.xhr?
-
-    render partial: 'quick_edit_form'
   end
 
   def create
@@ -86,46 +81,25 @@ class Tempest::UsersController < AdminController
       if @user.save
         @user.invite!(current_user)
         format.html do
-          if request.xhr?
-            row_partial = user_params[:alt_list].present? ? user_params[:alt_list] : 'user'
-            render partial: row_partial, locals: { "#{row_partial}": @user }, status: 200
-          else
-
-            redirect_to edit_admin_user_path(@user)
-
-          end
+          redirect_to edit_admin_user_path(@user)
         end
+
         format.json do
           render json: { 'record_id': @user&.id }
         end
+
       else
         format.html do
-          if request.xhr?
-            render partial: 'quick_edit_form', status: 422
-          else
-            @title = 'New User'
-            render action: :new
-          end
+          @title = 'New User'
+          render action: :new
         end
-
-        format.json do
-          render json: { 'record_id': @user&.id }
-        end
-
       end
     end
   end
 
   def edit
     @title = "Edit #{@user}"
-    @alt_list = params[:alt_list]
-    return unless request.xhr?
-
-    if params[:single_show_edit]
-      render partial: 'form'
-    else
-      render partial: 'quick_edit_form'
-    end
+    render partial: 'form' if request.xhr? && params[:single_show_edit]
   end
 
   def update
@@ -134,30 +108,13 @@ class Tempest::UsersController < AdminController
     respond_to do |format|
       if @user.update(user_params)
         format.html do
-          if request.xhr?
-            row_partial = user_params[:alt_list].present? ? user_params[:alt_list] : 'user'
-            render partial: row_partial, locals: { "#{row_partial}": @user }, status: 200
-          else
-
-            redirect_to edit_admin_user_path(@user), notice: 'User was successfully updated.'
-
-          end
+          redirect_to edit_admin_user_path(@user), notice: 'User was successfully updated.'
         end
-
-        format.json do
-          render json: { 'record_id': @user&.id }
-        end
-
       else
         format.html do
-          if request.xhr?
-            render partial: 'quick_edit_form', status: 422
-          else
-            @title = "Edit #{@user}"
-            render action: :edit
-          end
+          @title = "Edit #{@user}"
+          render action: :edit
         end
-        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -186,7 +143,7 @@ class Tempest::UsersController < AdminController
     @pdf_button = false
     @copy_button = false
     @csv_button = false
-    @xls_button = true
+    @xls_button = false
     @print_button = false
     @main_list_screen = true
     @icon = ''

@@ -1,5 +1,5 @@
 ##
-#
+# User
 class Tempest::User < ApplicationRecord
   include ClassyEnum::ActiveRecord
   classy_enum_attr :state, class_name: 'State', allow_blank: true,
@@ -47,6 +47,14 @@ OR users.suburb ILIKE :query", query: "%#{query}%")
   # -- Scope methods end --
 
   # -- Sort methods start --
+
+  ##
+  # +SortOption+ Sort Method
+  # @!scope class
+  # @return (Sort Option)
+  sort_option :first_name, lambda {
+    order(Arel.sql('LOWER(users.first_name)'))
+  }
   # -- Sort methods end --
 
   humanize :active, boolean: true

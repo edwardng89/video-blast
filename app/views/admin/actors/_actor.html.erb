@@ -24,15 +24,6 @@
     <% form_path = polymorphic_path([:admin, actor], alt_list: 'actor') %>
   <% end %>
   <td class="minimal">
-    <%= link_to('<span class="fa-stack"><i class="fa fa-search fa-stack-1x"></i></span>'.html_safe,
-                polymorphic_path([:admin, actor]),
-        title: 'Show actor', class: 'index-link') %>
-    <% if can?(:update, (actor.respond_to?(:object) ? actor.object : actor) ) %>
-      <%= link_to(full_icon.html_safe,
-                  edit_polymorphic_path([:admin, actor]),
-          title: 'Edit actor',
-          class: 'index-link') %>
-    <% end %>
     <% if can?(:update, (actor.respond_to?(:object) ? actor.object : actor) ) %>
       <%= link_to icon.html_safe, '#', title: 'Edit actor',
                   class: 'index-link modal-btn modal-edit', data: { 'form-url': form_path, alt_list: action_name } %>

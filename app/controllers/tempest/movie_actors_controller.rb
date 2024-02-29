@@ -18,7 +18,7 @@ class Tempest::MovieActorsController < AdminController
     @title = 'Movies' if @actor
     @title = 'Cast' if @movie
     index_setup
-    @title ||= 'Movie Actors'
+    @title ||= 'Casts'
 
     @movie_actors = apply_scopes(@movie_actors.includes(:actor, :movie))
     respond_with(@movie_actors) do |format|
@@ -76,7 +76,7 @@ class Tempest::MovieActorsController < AdminController
   def new
     @alt_list = params[:alt_list]
 
-    @title = 'New Movie Actor'
+    @title = 'New Cast'
     return unless request.xhr?
 
     render partial: 'quick_edit_form'

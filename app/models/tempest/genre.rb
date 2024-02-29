@@ -20,6 +20,14 @@ class Tempest::Genre < ApplicationRecord
   # -- Scope methods end --
 
   # -- Sort methods start --
+
+  ##
+  # +SortOption+ Sort Method
+  # @!scope class
+  # @return (Sort Option)
+  sort_option :sort_order, lambda {
+    order(Arel.sql('(genres.sort_order)'))
+  }
   # -- Sort methods end --
 
   humanize :active, boolean: true

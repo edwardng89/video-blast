@@ -15,6 +15,14 @@ class Tempest::MovieActor < ApplicationRecord
   # -- Scope methods end --
 
   # -- Sort methods start --
+
+  ##
+  # +SortOption+ Sort Method
+  # @!scope class
+  # @return (Sort Option)
+  sort_option :sort_order, lambda {
+    order(Arel.sql('(movie_actors.sort_order)'))
+  }
   # -- Sort methods end --
 
   # -- Instance methods start --

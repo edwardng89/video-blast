@@ -32,7 +32,7 @@
 :trackable: true
 :models:
 - :title: actor
-  :description: ''
+  :description: Actor
   :resource: true
   :pure_admin: true
   :quick_edit: true
@@ -203,6 +203,40 @@
     :api_input: false
     :api_output: false
     :sort_order: 14652
+    :technical_description: 
+    :method_validations: []
+    :method_params: []
+    :enum: 
+    :state_machine: 
+    :image_uploader: 
+  - :name: first_name
+    :description: Sort Method
+    :code: order( Arel.sql('LOWER(actors.first_name)') )
+    :column: false
+    :type: sort_method
+    :model: actor
+    :choices: 
+    :as_sort: true
+    :original_name: first_name
+    :true_label: 
+    :attr_accessor: false
+    :false_label: 
+    :default_value: 
+    :callback: 
+    :change_on_method: false
+    :default_method: 
+    :inherited_method: false
+    :inherited_model: false
+    :imported_code: 
+    :return_type: 
+    :display_format_group: 
+    :display_format_value: 
+    :display_format: 
+    :include_in_export: false
+    :relation_type: 
+    :api_input: false
+    :api_output: false
+    :sort_order: 1
     :technical_description: 
     :method_validations: []
     :method_params: []
@@ -743,7 +777,7 @@
     :display_format: 
     :custom_code: 
   :nested_models: []
-  :sortable: 
+  :sortable: false
   :nested_form_ids: []
   :nested_form_relations: []
   :nested_form_names: []
@@ -751,10 +785,10 @@
   :parent_models: []
   :allow_create: true
   :full_edit_create: false
-  :full_edit_page: true
+  :full_edit_page: false
   :total_sort_option: 
   :quick_edit_type: modal
-  :include_show_screen: true
+  :include_show_screen: false
   :children_models:
   - :parent_model: actor
     :model: movie_actor
@@ -783,12 +817,12 @@
   :excel_button: true
   :pdf_button: false
   :print_button: false
-  :sort_option: 
-  :collapsible_default: 
+  :sort_option: first_name
+  :collapsible_default: ''
   :action_buttons: []
-  :icon: 
+  :icon: ''
   :hierarchy_sort_column: 
-  :hierarchy_structure: 
+  :hierarchy_structure: false
   :is_email_template: false
   :alternate_lists: []
   :list_filters: []
@@ -816,7 +850,7 @@
   :multi_uploader: false
   :multi_upload_collection: 
   :model_routes: '{"base_route":"actors","children_routes":[{"child_model":"movie_actors","collection":""}],"collections":[],"actions":[]}'
-  :custom_display_name: 
+  :custom_display_name: ''
 - :title: communication_record
   :description: Communication Record Model
   :resource: true
@@ -2204,6 +2238,40 @@
     :state_machine: 
     :image_uploader: 
   - :name: sort_order
+    :description: Sort Method
+    :code: order( Arel.sql('(genres.sort_order)') )
+    :column: false
+    :type: sort_method
+    :model: genre
+    :choices: 
+    :as_sort: false
+    :original_name: sort_order
+    :true_label: 
+    :attr_accessor: false
+    :false_label: 
+    :default_value: 
+    :callback: 
+    :change_on_method: false
+    :default_method: 
+    :inherited_method: false
+    :inherited_model: false
+    :imported_code: 
+    :return_type: 
+    :display_format_group: 
+    :display_format_value: 
+    :display_format: 
+    :include_in_export: false
+    :relation_type: 
+    :api_input: false
+    :api_output: false
+    :sort_order: 1
+    :technical_description: 
+    :method_validations: []
+    :method_params: []
+    :enum: 
+    :state_machine: 
+    :image_uploader: 
+  - :name: sort_order
     :description: Sort record for draggable sort table
     :code: 
     :column: true
@@ -2527,10 +2595,10 @@
   :parent_models: []
   :allow_create: true
   :full_edit_create: false
-  :full_edit_page: true
+  :full_edit_page: false
   :total_sort_option: 
   :quick_edit_type: modal
-  :include_show_screen: true
+  :include_show_screen: false
   :children_models: []
   :rows_limit: 25
   :copy_button: false
@@ -2573,10 +2641,10 @@
   :model_routes: '{"base_route":"genres","children_routes":[],"collections":[],"actions":[]}'
   :custom_display_name: ''
 - :title: movie
-  :description: ''
+  :description: Movie
   :resource: true
   :pure_admin: true
-  :quick_edit: true
+  :quick_edit: false
   :userstamps: true
   :timestamps: true
   :method_records:
@@ -3052,6 +3120,40 @@
     :method_validations:
     - :validation_type: presence
       :validation_param: 
+    :method_params: []
+    :enum: 
+    :state_machine: 
+    :image_uploader: 
+  - :name: title
+    :description: Sort Method
+    :code: order( Arel.sql('LOWER(movies.title)') )
+    :column: false
+    :type: sort_method
+    :model: movie
+    :choices: 
+    :as_sort: true
+    :original_name: title
+    :true_label: 
+    :attr_accessor: false
+    :false_label: 
+    :default_value: 
+    :callback: 
+    :change_on_method: false
+    :default_method: 
+    :inherited_method: false
+    :inherited_model: false
+    :imported_code: 
+    :return_type: 
+    :display_format_group: 
+    :display_format_value: 
+    :display_format: 
+    :include_in_export: false
+    :relation_type: 
+    :api_input: false
+    :api_output: false
+    :sort_order: 1
+    :technical_description: 
+    :method_validations: []
     :method_params: []
     :enum: 
     :state_machine: 
@@ -3729,7 +3831,7 @@
     :display_format: 
     :custom_code: 
   :nested_models: []
-  :sortable: 
+  :sortable: false
   :nested_form_ids: []
   :nested_form_relations: []
   :nested_form_names: []
@@ -3739,14 +3841,14 @@
   :full_edit_create: false
   :full_edit_page: true
   :total_sort_option: 
-  :quick_edit_type: modal
-  :include_show_screen: true
+  :quick_edit_type: none
+  :include_show_screen: false
   :children_models:
   - :parent_model: movie
     :model: movie_copy
     :shallow: false
-    :sort_option: 
-    :icon: 
+    :sort_option: format
+    :icon: ''
     :title: Movie Copies
     :expand: true
     :has_filters: false
@@ -3790,12 +3892,12 @@
   :excel_button: true
   :pdf_button: false
   :print_button: false
-  :sort_option: 
-  :collapsible_default: 
+  :sort_option: title
+  :collapsible_default: ''
   :action_buttons: []
-  :icon: 
+  :icon: ''
   :hierarchy_sort_column: 
-  :hierarchy_structure: 
+  :hierarchy_structure: false
   :is_email_template: false
   :alternate_lists: []
   :list_filters: []
@@ -3823,7 +3925,7 @@
   :multi_uploader: false
   :multi_upload_collection: 
   :model_routes: '{"base_route":"movies","children_routes":[{"child_model":"movie_actors","collection":""},{"child_model":"movie_copies","collection":""}],"collections":[],"actions":[]}'
-  :custom_display_name: 
+  :custom_display_name: ''
 - :title: movie_actor
   :description: Movie Actor
   :resource: true
@@ -4036,6 +4138,40 @@
     :method_validations:
     - :validation_type: presence
       :validation_param: 
+    :method_params: []
+    :enum: 
+    :state_machine: 
+    :image_uploader: 
+  - :name: sort_order
+    :description: Sort Method
+    :code: order( Arel.sql('(movie_actors.sort_order)') )
+    :column: false
+    :type: sort_method
+    :model: movie_actor
+    :choices: 
+    :as_sort: false
+    :original_name: sort_order
+    :true_label: 
+    :attr_accessor: false
+    :false_label: 
+    :default_value: 
+    :callback: 
+    :change_on_method: false
+    :default_method: 
+    :inherited_method: false
+    :inherited_model: false
+    :imported_code: 
+    :return_type: 
+    :display_format_group: 
+    :display_format_value: 
+    :display_format: 
+    :include_in_export: false
+    :relation_type: 
+    :api_input: false
+    :api_output: false
+    :sort_order: 1
+    :technical_description: 
+    :method_validations: []
     :method_params: []
     :enum: 
     :state_machine: 
@@ -4275,7 +4411,7 @@
     :font_size: 
     :truncate: 
     :quick_edit_type: modal
-    :full_edit_page: true
+    :full_edit_page: false
     :editable: false
     :collection_record: actor
     :method_record_type: references
@@ -4301,7 +4437,7 @@
     :cell_colour: 
     :font_size: 
     :truncate: 
-    :quick_edit_type: modal
+    :quick_edit_type: none
     :full_edit_page: true
     :editable: false
     :collection_record: movie
@@ -4408,10 +4544,10 @@
   - actor
   :allow_create: true
   :full_edit_create: false
-  :full_edit_page: true
+  :full_edit_page: false
   :total_sort_option: 
   :quick_edit_type: modal
-  :include_show_screen: true
+  :include_show_screen: false
   :children_models: []
   :rows_limit: 25
   :copy_button: false
@@ -4452,9 +4588,9 @@
   :multi_uploader: false
   :multi_upload_collection: 
   :model_routes: '{"base_route":"movie_actors","children_routes":[],"collections":[],"actions":[]}'
-  :custom_display_name: ''
+  :custom_display_name: Cast
 - :title: movie_copy
-  :description: ''
+  :description: Movie Copy
   :resource: true
   :pure_admin: true
   :quick_edit: true
@@ -4659,6 +4795,40 @@
     :api_input: false
     :api_output: false
     :sort_order: 14677
+    :technical_description: 
+    :method_validations: []
+    :method_params: []
+    :enum: 
+    :state_machine: 
+    :image_uploader: 
+  - :name: format
+    :description: Sort Method
+    :code: order( Arel.sql('LOWER(movie_copies.format)') )
+    :column: false
+    :type: sort_method
+    :model: movie_copy
+    :choices: 
+    :as_sort: true
+    :original_name: format
+    :true_label: 
+    :attr_accessor: false
+    :false_label: 
+    :default_value: 
+    :callback: 
+    :change_on_method: false
+    :default_method: 
+    :inherited_method: false
+    :inherited_model: false
+    :imported_code: 
+    :return_type: 
+    :display_format_group: 
+    :display_format_value: 
+    :display_format: 
+    :include_in_export: false
+    :relation_type: 
+    :api_input: false
+    :api_output: false
+    :sort_order: 1
     :technical_description: 
     :method_validations: []
     :method_params: []
@@ -5383,8 +5553,8 @@
   - :parent_model: movie
     :model: movie_copy
     :shallow: false
-    :sort_option: 
-    :icon: 
+    :sort_option: format
+    :icon: ''
     :title: Movie Copies
     :expand: true
     :has_filters: false
@@ -5401,7 +5571,7 @@
     :sort: 536
     :alternate_list: 
     :relationship: ''
-  :sortable: 
+  :sortable: false
   :nested_form_ids: []
   :nested_form_relations: []
   :nested_form_names: []
@@ -5410,10 +5580,10 @@
   - movie
   :allow_create: true
   :full_edit_create: false
-  :full_edit_page: true
+  :full_edit_page: false
   :total_sort_option: 
   :quick_edit_type: modal
-  :include_show_screen: true
+  :include_show_screen: false
   :children_models: []
   :rows_limit: 25
   :copy_button: false
@@ -5421,12 +5591,12 @@
   :excel_button: true
   :pdf_button: false
   :print_button: false
-  :sort_option: 
-  :collapsible_default: 
+  :sort_option: format
+  :collapsible_default: ''
   :action_buttons: []
-  :icon: 
+  :icon: ''
   :hierarchy_sort_column: 
-  :hierarchy_structure: 
+  :hierarchy_structure: false
   :is_email_template: false
   :alternate_lists: []
   :list_filters: []
@@ -5454,7 +5624,7 @@
   :multi_uploader: false
   :multi_upload_collection: 
   :model_routes: '{"base_route":"movie_copies","children_routes":[],"collections":[],"actions":[]}'
-  :custom_display_name: 
+  :custom_display_name: ''
 - :title: movie_genre
   :description: Movie Genre
   :resource: true
@@ -5940,7 +6110,7 @@
     :font_size: 
     :truncate: 
     :quick_edit_type: modal
-    :full_edit_page: true
+    :full_edit_page: false
     :editable: false
     :collection_record: genre
     :method_record_type: references
@@ -5966,7 +6136,7 @@
     :cell_colour: 
     :font_size: 
     :truncate: 
-    :quick_edit_type: modal
+    :quick_edit_type: none
     :full_edit_page: true
     :editable: false
     :collection_record: movie
@@ -6029,10 +6199,10 @@
   :parent_models: []
   :allow_create: true
   :full_edit_create: false
-  :full_edit_page: true
+  :full_edit_page: false
   :total_sort_option: 
   :quick_edit_type: modal
-  :include_show_screen: true
+  :include_show_screen: false
   :children_models: []
   :rows_limit: 25
   :copy_button: false
@@ -6075,7 +6245,7 @@
   :model_routes: '{"base_route":"movie_genres","children_routes":[],"collections":[],"actions":[]}'
   :custom_display_name: ''
 - :title: movie_notification
-  :description: ''
+  :description: Movie Notification
   :resource: true
   :pure_admin: true
   :quick_edit: true
@@ -6317,6 +6487,40 @@
     :api_output: false
     :sort_order: 14709
     :technical_description: ''
+    :method_validations: []
+    :method_params: []
+    :enum: 
+    :state_machine: 
+    :image_uploader: 
+  - :name: requested_on
+    :description: Sort Method
+    :code: order( Arel.sql('(movie_notifications.requested_on)') )
+    :column: false
+    :type: sort_method
+    :model: movie_notification
+    :choices: 
+    :as_sort: true
+    :original_name: requested_on
+    :true_label: 
+    :attr_accessor: false
+    :false_label: 
+    :default_value: 
+    :callback: 
+    :change_on_method: false
+    :default_method: 
+    :inherited_method: false
+    :inherited_model: false
+    :imported_code: 
+    :return_type: 
+    :display_format_group: 
+    :display_format_value: 
+    :display_format: 
+    :include_in_export: false
+    :relation_type: 
+    :api_input: false
+    :api_output: false
+    :sort_order: 1
+    :technical_description: 
     :method_validations: []
     :method_params: []
     :enum: 
@@ -6710,7 +6914,7 @@
     :font_size: 
     :truncate: 
     :quick_edit_type: modal
-    :full_edit_page: true
+    :full_edit_page: false
     :editable: false
     :collection_record: movie_copy
     :method_record_type: references
@@ -6834,8 +7038,8 @@
   - :parent_model: user
     :model: movie_notification
     :shallow: false
-    :sort_option: 
-    :icon: 
+    :sort_option: requested_on
+    :icon: ''
     :title: Notification Requests
     :expand: true
     :has_filters: true
@@ -6852,7 +7056,7 @@
     :sort: 539
     :alternate_list: 
     :relationship: ''
-  :sortable: 
+  :sortable: false
   :nested_form_ids: []
   :nested_form_relations: []
   :nested_form_names: []
@@ -6861,10 +7065,10 @@
   - user
   :allow_create: true
   :full_edit_create: false
-  :full_edit_page: true
+  :full_edit_page: false
   :total_sort_option: 
   :quick_edit_type: modal
-  :include_show_screen: true
+  :include_show_screen: false
   :children_models: []
   :rows_limit: 25
   :copy_button: false
@@ -6872,12 +7076,12 @@
   :excel_button: true
   :pdf_button: false
   :print_button: false
-  :sort_option: 
-  :collapsible_default: 
+  :sort_option: requested_on
+  :collapsible_default: ''
   :action_buttons: []
-  :icon: 
+  :icon: ''
   :hierarchy_sort_column: 
-  :hierarchy_structure: 
+  :hierarchy_structure: false
   :is_email_template: false
   :alternate_lists: []
   :list_filters: []
@@ -6905,7 +7109,7 @@
   :multi_uploader: false
   :multi_upload_collection: 
   :model_routes: '{"base_route":"movie_notifications","children_routes":[],"collections":[],"actions":[]}'
-  :custom_display_name: 
+  :custom_display_name: ''
 - :title: order
   :description: Order
   :resource: true
@@ -7113,6 +7317,40 @@
     :api_output: false
     :sort_order: 14704
     :technical_description: ''
+    :method_validations: []
+    :method_params: []
+    :enum: 
+    :state_machine: 
+    :image_uploader: 
+  - :name: return_due
+    :description: Sort Method
+    :code: order( Arel.sql('(orders.return_due)') )
+    :column: false
+    :type: sort_method
+    :model: order
+    :choices: 
+    :as_sort: true
+    :original_name: return_due
+    :true_label: 
+    :attr_accessor: false
+    :false_label: 
+    :default_value: 
+    :callback: 
+    :change_on_method: false
+    :default_method: 
+    :inherited_method: false
+    :inherited_model: false
+    :imported_code: 
+    :return_type: 
+    :display_format_group: 
+    :display_format_value: 
+    :display_format: 
+    :include_in_export: false
+    :relation_type: 
+    :api_input: false
+    :api_output: false
+    :sort_order: 1
+    :technical_description: 
     :method_validations: []
     :method_params: []
     :enum: 
@@ -7498,7 +7736,7 @@
     :cell_colour: ''
     :font_size: 
     :truncate: 
-    :quick_edit_type: modal
+    :quick_edit_type: none
     :full_edit_page: true
     :editable: false
     :collection_record: user
@@ -7664,7 +7902,7 @@
   - :parent_model: user
     :model: order
     :shallow: false
-    :sort_option: 
+    :sort_option: return_due
     :icon: ''
     :title: Orders
     :expand: true
@@ -7691,10 +7929,10 @@
   - user
   :allow_create: true
   :full_edit_create: false
-  :full_edit_page: true
+  :full_edit_page: false
   :total_sort_option: 
   :quick_edit_type: modal
-  :include_show_screen: true
+  :include_show_screen: false
   :children_models: []
   :rows_limit: 25
   :copy_button: false
@@ -7702,7 +7940,7 @@
   :excel_button: true
   :pdf_button: false
   :print_button: false
-  :sort_option: 
+  :sort_option: return_due
   :collapsible_default: ''
   :action_buttons: []
   :icon: ''
@@ -7737,7 +7975,7 @@
   :model_routes: '{"base_route":"orders","children_routes":[],"collections":[],"actions":[]}'
   :custom_display_name: Rental
 - :title: order_movie_copy
-  :description: ''
+  :description: Order Movie Copy
   :resource: true
   :pure_admin: true
   :quick_edit: true
@@ -7912,6 +8150,40 @@
     :method_validations:
     - :validation_type: presence
       :validation_param: 
+    :method_params: []
+    :enum: 
+    :state_machine: 
+    :image_uploader: 
+  - :name: order
+    :description: Sort Method
+    :code: order( Arel.sql('(order_movie_copies.order_id)') )
+    :column: false
+    :type: sort_method
+    :model: order_movie_copy
+    :choices: 
+    :as_sort: true
+    :original_name: order
+    :true_label: 
+    :attr_accessor: false
+    :false_label: 
+    :default_value: 
+    :callback: 
+    :change_on_method: false
+    :default_method: 
+    :inherited_method: false
+    :inherited_model: false
+    :imported_code: 
+    :return_type: 
+    :display_format_group: 
+    :display_format_value: 
+    :display_format: 
+    :include_in_export: false
+    :relation_type: 
+    :api_input: false
+    :api_output: false
+    :sort_order: 1
+    :technical_description: 
+    :method_validations: []
     :method_params: []
     :enum: 
     :state_machine: 
@@ -8214,7 +8486,7 @@
     :font_size: 
     :truncate: 
     :quick_edit_type: modal
-    :full_edit_page: true
+    :full_edit_page: false
     :editable: false
     :collection_record: order
     :method_record_type: references
@@ -8241,7 +8513,7 @@
     :font_size: 
     :truncate: 
     :quick_edit_type: modal
-    :full_edit_page: true
+    :full_edit_page: false
     :editable: false
     :collection_record: movie_copy
     :method_record_type: references
@@ -8322,7 +8594,7 @@
     :display_format: 
     :custom_code: 
   :nested_models: []
-  :sortable: 
+  :sortable: false
   :nested_form_ids: []
   :nested_form_relations: []
   :nested_form_names: []
@@ -8330,10 +8602,10 @@
   :parent_models: []
   :allow_create: true
   :full_edit_create: false
-  :full_edit_page: true
+  :full_edit_page: false
   :total_sort_option: 
   :quick_edit_type: modal
-  :include_show_screen: true
+  :include_show_screen: false
   :children_models: []
   :rows_limit: 25
   :copy_button: false
@@ -8341,12 +8613,12 @@
   :excel_button: true
   :pdf_button: false
   :print_button: false
-  :sort_option: 
-  :collapsible_default: 
+  :sort_option: order
+  :collapsible_default: ''
   :action_buttons: []
-  :icon: 
+  :icon: ''
   :hierarchy_sort_column: 
-  :hierarchy_structure: 
+  :hierarchy_structure: false
   :is_email_template: false
   :alternate_lists: []
   :list_filters: []
@@ -8374,12 +8646,12 @@
   :multi_uploader: false
   :multi_upload_collection: 
   :model_routes: '{"base_route":"order_movie_copies","children_routes":[],"collections":[],"actions":[]}'
-  :custom_display_name: 
+  :custom_display_name: ''
 - :title: user
-  :description: ''
+  :description: User
   :resource: true
   :pure_admin: true
-  :quick_edit: true
+  :quick_edit: false
   :userstamps: true
   :timestamps: true
   :method_records:
@@ -8691,6 +8963,40 @@
       :validation_param: 
     - :validation_type: presence
       :validation_param: 
+    :method_params: []
+    :enum: 
+    :state_machine: 
+    :image_uploader: 
+  - :name: first_name
+    :description: Sort Method
+    :code: order( Arel.sql('LOWER(users.first_name)') )
+    :column: false
+    :type: sort_method
+    :model: user
+    :choices: 
+    :as_sort: true
+    :original_name: first_name
+    :true_label: 
+    :attr_accessor: false
+    :false_label: 
+    :default_value: 
+    :callback: 
+    :change_on_method: false
+    :default_method: 
+    :inherited_method: false
+    :inherited_model: false
+    :imported_code: 
+    :return_type: 
+    :display_format_group: 
+    :display_format_value: 
+    :display_format: 
+    :include_in_export: false
+    :relation_type: 
+    :api_input: false
+    :api_output: false
+    :sort_order: 1
+    :technical_description: 
+    :method_validations: []
     :method_params: []
     :enum: 
     :state_machine: 
@@ -10113,7 +10419,7 @@
     :display_format: 
     :custom_code: 
   :nested_models: []
-  :sortable: 
+  :sortable: false
   :nested_form_ids: []
   :nested_form_relations: []
   :nested_form_names: []
@@ -10123,13 +10429,13 @@
   :full_edit_create: false
   :full_edit_page: true
   :total_sort_option: 
-  :quick_edit_type: modal
-  :include_show_screen: true
+  :quick_edit_type: none
+  :include_show_screen: false
   :children_models:
   - :parent_model: user
     :model: order
     :shallow: false
-    :sort_option: 
+    :sort_option: return_due
     :icon: ''
     :title: Orders
     :expand: true
@@ -10150,8 +10456,8 @@
   - :parent_model: user
     :model: movie_notification
     :shallow: false
-    :sort_option: 
-    :icon: 
+    :sort_option: requested_on
+    :icon: ''
     :title: Notification Requests
     :expand: true
     :has_filters: true
@@ -10171,15 +10477,15 @@
   :rows_limit: 25
   :copy_button: false
   :csv_button: false
-  :excel_button: true
+  :excel_button: false
   :pdf_button: false
   :print_button: false
-  :sort_option: 
-  :collapsible_default: 
+  :sort_option: first_name
+  :collapsible_default: ''
   :action_buttons: []
-  :icon: 
+  :icon: ''
   :hierarchy_sort_column: 
-  :hierarchy_structure: 
+  :hierarchy_structure: false
   :is_email_template: false
   :alternate_lists: []
   :list_filters: []
@@ -10279,9 +10585,9 @@
   :multi_uploader: false
   :multi_upload_collection: 
   :model_routes: '{"base_route":"users","children_routes":[{"child_model":"movie_notifications","collection":""},{"child_model":"orders","collection":""}],"collections":[],"actions":[{"name":"reset_password","action_resource":"member","action_type":"get"}]}'
-  :custom_display_name: 
+  :custom_display_name: ''
 - :title: user_rating
-  :description: ''
+  :description: User Rating
   :resource: true
   :pure_admin: true
   :quick_edit: true
@@ -10456,6 +10762,40 @@
     :method_validations:
     - :validation_type: presence
       :validation_param: 
+    :method_params: []
+    :enum: 
+    :state_machine: 
+    :image_uploader: 
+  - :name: rating
+    :description: Sort Method
+    :code: order( Arel.sql('(user_ratings.rating)') )
+    :column: false
+    :type: sort_method
+    :model: user_rating
+    :choices: 
+    :as_sort: true
+    :original_name: rating
+    :true_label: 
+    :attr_accessor: false
+    :false_label: 
+    :default_value: 
+    :callback: 
+    :change_on_method: false
+    :default_method: 
+    :inherited_method: false
+    :inherited_model: false
+    :imported_code: 
+    :return_type: 
+    :display_format_group: 
+    :display_format_value: 
+    :display_format: 
+    :include_in_export: false
+    :relation_type: 
+    :api_input: false
+    :api_output: false
+    :sort_order: 1
+    :technical_description: 
+    :method_validations: []
     :method_params: []
     :enum: 
     :state_machine: 
@@ -10786,7 +11126,7 @@
     :cell_colour: 
     :font_size: 
     :truncate: 
-    :quick_edit_type: modal
+    :quick_edit_type: none
     :full_edit_page: true
     :editable: false
     :collection_record: movie
@@ -10868,7 +11208,7 @@
     :display_format: 
     :custom_code: 
   :nested_models: []
-  :sortable: 
+  :sortable: false
   :nested_form_ids: []
   :nested_form_relations: []
   :nested_form_names: []
@@ -10876,10 +11216,10 @@
   :parent_models: []
   :allow_create: true
   :full_edit_create: false
-  :full_edit_page: true
+  :full_edit_page: false
   :total_sort_option: 
   :quick_edit_type: modal
-  :include_show_screen: true
+  :include_show_screen: false
   :children_models: []
   :rows_limit: 25
   :copy_button: false
@@ -10887,12 +11227,12 @@
   :excel_button: true
   :pdf_button: false
   :print_button: false
-  :sort_option: 
-  :collapsible_default: 
+  :sort_option: rating
+  :collapsible_default: ''
   :action_buttons: []
-  :icon: 
+  :icon: ''
   :hierarchy_sort_column: 
-  :hierarchy_structure: 
+  :hierarchy_structure: false
   :is_email_template: false
   :alternate_lists: []
   :list_filters: []
@@ -10920,7 +11260,7 @@
   :multi_uploader: false
   :multi_upload_collection: 
   :model_routes: '{"base_route":"user_ratings","children_routes":[],"collections":[],"actions":[]}'
-  :custom_display_name: 
+  :custom_display_name: ''
 :controller_records:
 - :title: actor
   :admin: 
@@ -11058,7 +11398,7 @@
   :custom_path: ''
   :description: Menu for Movie
   :position: 2
-  :icon: 
+  :icon: ''
   :parent: 
   :children?: false
   :model: Movie
@@ -11071,7 +11411,7 @@
   :custom_path: ''
   :description: Menu for User
   :position: 3
-  :icon: 
+  :icon: ''
   :parent: 
   :children?: false
   :model: User
@@ -11097,7 +11437,7 @@
   :custom_path: ''
   :description: Menu for Actor
   :position: 1
-  :icon: 
+  :icon: ''
   :parent: 2525
   :children?: false
   :model: Actor
@@ -11120,10 +11460,10 @@
 :placeholders: []
 :tokens_models:
 - :title: user
-  :description: ''
+  :description: User
   :resource: true
   :pure_admin: true
-  :quick_edit: true
+  :quick_edit: false
   :userstamps: true
   :timestamps: true
   :method_records:
@@ -11435,6 +11775,40 @@
       :validation_param: 
     - :validation_type: presence
       :validation_param: 
+    :method_params: []
+    :enum: 
+    :state_machine: 
+    :image_uploader: 
+  - :name: first_name
+    :description: Sort Method
+    :code: order( Arel.sql('LOWER(users.first_name)') )
+    :column: false
+    :type: sort_method
+    :model: user
+    :choices: 
+    :as_sort: true
+    :original_name: first_name
+    :true_label: 
+    :attr_accessor: false
+    :false_label: 
+    :default_value: 
+    :callback: 
+    :change_on_method: false
+    :default_method: 
+    :inherited_method: false
+    :inherited_model: false
+    :imported_code: 
+    :return_type: 
+    :display_format_group: 
+    :display_format_value: 
+    :display_format: 
+    :include_in_export: false
+    :relation_type: 
+    :api_input: false
+    :api_output: false
+    :sort_order: 1
+    :technical_description: 
+    :method_validations: []
     :method_params: []
     :enum: 
     :state_machine: 
@@ -12857,7 +13231,7 @@
     :display_format: 
     :custom_code: 
   :nested_models: []
-  :sortable: 
+  :sortable: false
   :nested_form_ids: []
   :nested_form_relations: []
   :nested_form_names: []
@@ -12867,13 +13241,13 @@
   :full_edit_create: false
   :full_edit_page: true
   :total_sort_option: 
-  :quick_edit_type: modal
-  :include_show_screen: true
+  :quick_edit_type: none
+  :include_show_screen: false
   :children_models:
   - :parent_model: user
     :model: order
     :shallow: false
-    :sort_option: 
+    :sort_option: return_due
     :icon: ''
     :title: Orders
     :expand: true
@@ -12894,8 +13268,8 @@
   - :parent_model: user
     :model: movie_notification
     :shallow: false
-    :sort_option: 
-    :icon: 
+    :sort_option: requested_on
+    :icon: ''
     :title: Notification Requests
     :expand: true
     :has_filters: true
@@ -12915,15 +13289,15 @@
   :rows_limit: 25
   :copy_button: false
   :csv_button: false
-  :excel_button: true
+  :excel_button: false
   :pdf_button: false
   :print_button: false
-  :sort_option: 
-  :collapsible_default: 
+  :sort_option: first_name
+  :collapsible_default: ''
   :action_buttons: []
-  :icon: 
+  :icon: ''
   :hierarchy_sort_column: 
-  :hierarchy_structure: 
+  :hierarchy_structure: false
   :is_email_template: false
   :alternate_lists: []
   :list_filters: []
@@ -13023,4 +13397,4 @@
   :multi_uploader: false
   :multi_upload_collection: 
   :model_routes: '{"base_route":"users","children_routes":[{"child_model":"movie_notifications","collection":""},{"child_model":"orders","collection":""}],"collections":[],"actions":[{"name":"reset_password","action_resource":"member","action_type":"get"}]}'
-  :custom_display_name: 
+  :custom_display_name: ''

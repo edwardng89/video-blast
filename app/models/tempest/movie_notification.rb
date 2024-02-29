@@ -1,5 +1,5 @@
 ##
-#
+# Movie Notification
 class Tempest::MovieNotification < ApplicationRecord
   acts_as_paranoid
   stampable optional: true
@@ -14,6 +14,14 @@ class Tempest::MovieNotification < ApplicationRecord
   # -- Scope methods end --
 
   # -- Sort methods start --
+
+  ##
+  # +SortOption+ Sort Method
+  # @!scope class
+  # @return (Sort Option)
+  sort_option :requested_on, lambda {
+    order(Arel.sql('(movie_notifications.requested_on)'))
+  }
   # -- Sort methods end --
 
   # -- Instance methods start --

@@ -44,18 +44,11 @@
     <% form_path = polymorphic_path([:admin, movie], alt_list: 'movie') %>
   <% end %>
   <td class="minimal">
-    <%= link_to('<span class="fa-stack"><i class="fa fa-search fa-stack-1x"></i></span>'.html_safe,
-                polymorphic_path([:admin, movie]),
-        title: 'Show movie', class: 'index-link') %>
     <% if can?(:update, (movie.respond_to?(:object) ? movie.object : movie) ) %>
       <%= link_to(full_icon.html_safe,
                   edit_polymorphic_path([:admin, movie]),
           title: 'Edit movie',
           class: 'index-link') %>
-    <% end %>
-    <% if can?(:update, (movie.respond_to?(:object) ? movie.object : movie) ) %>
-      <%= link_to icon.html_safe, '#', title: 'Edit movie',
-                  class: 'index-link modal-btn modal-edit', data: { 'form-url': form_path, alt_list: action_name } %>
     <% end %>
   </td>
   <!-- action buttons start -->

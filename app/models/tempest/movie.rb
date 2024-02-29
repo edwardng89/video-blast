@@ -1,5 +1,5 @@
 ##
-#
+# Movie
 class Tempest::Movie < ApplicationRecord
   include ClassyEnum::ActiveRecord
   classy_enum_attr :content_rating, class_name: 'ContentRating', allow_blank: true,
@@ -36,6 +36,14 @@ class Tempest::Movie < ApplicationRecord
   # -- Scope methods end --
 
   # -- Sort methods start --
+
+  ##
+  # +SortOption+ Sort Method
+  # @!scope class
+  # @return (Sort Option)
+  sort_option :title, lambda {
+    order(Arel.sql('LOWER(movies.title)'))
+  }
   # -- Sort methods end --
 
   humanize :active, boolean: true

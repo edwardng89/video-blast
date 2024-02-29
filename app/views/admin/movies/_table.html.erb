@@ -13,20 +13,9 @@
           <!-- list actions start-->
           <!-- list actions end -->
           <% if can?(:create, Movie) && @allow_create %>
-            <% if @full_edit_create %>
-              <%= link_to new_polymorphic_path([:admin, :movie], alt_list: ''),
-                            class: 'btn btn-add-new btn-new' do %>
-                Add New
-              <% end %>
-            <% else %>
-              <%= link_to '#', class: 'btn btn-new
-              modal-btn',
-                            data: {
-                              'form-url' => new_polymorphic_path([:admin, :movie], alt_list: ''),
-                              
-                     } do %>
-                Add New
-              <% end %>
+            <%= link_to new_polymorphic_path([:admin, :movie]),
+              class: 'btn btn-new' do %>
+              Add New
             <% end %>
           <% end %>
         </div>
@@ -51,8 +40,6 @@
         <div class="table-responsive">
           <table class="table table-sm  table-striped table-hover  "
           
-          
-          id="quick-edit-movie-table"
           >
             <thead>
               <tr>

@@ -17,6 +17,14 @@ class Tempest::Order < ApplicationRecord
   # -- Scope methods end --
 
   # -- Sort methods start --
+
+  ##
+  # +SortOption+ Sort Method
+  # @!scope class
+  # @return (Sort Option)
+  sort_option :return_due, lambda {
+    order(Arel.sql('(orders.return_due)'))
+  }
   # -- Sort methods end --
 
   # -- Instance methods start --
