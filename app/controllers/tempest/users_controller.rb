@@ -1,18 +1,26 @@
 class Tempest::UsersController < AdminController
-  has_scope :in_order, as: :sort, allow_blank: true, default: 'first_name'
+
+  # Define scopes that are applied through `apply_scopes` within controller action
+  has_scope :in_order, as: :sort, allow_blank: true, default: '#Sort order name here'
   has_scope :reverse_order, type: :boolean
-  load_and_authorize_resource
-  respond_to :html
   has_scope :query
 
+  # Cancancan setup for resource initialisation
+  load_and_authorize_resource
+
+  # Draper decorator setup applied to object
   decorates_assigned :users, :user
 
-  # filter_scopes_start_here
-  # filter_scopes_end_here
+  # handle html requests
+  respond_to :html
 
   def index
+
+    # sets up the default theme variables that control display on the screen, e.g. pagination count
     index_setup
-    @title ||= 'Users'
+
+    # name of the model to display on view screens
+    @title ||= '#model name here'
 
     @users = apply_scopes(@users)
     respond_with(@users) do |format|
@@ -20,13 +28,20 @@ class Tempest::UsersController < AdminController
       # index html group content ends here
 
       format.html do
-        @users = @users.page(params[:page]).per(@default_limit)
+        # Set up pagination for the model collection
+        # FIXME replace with collection name of the model
+        @model_collection = @model_collection.page(params[:page]).per(@default_limit)
+
+        # clears saved params for filters in redis
         if params[:commit] == 'Clear'
           redirect_to polymorphic_path([:users])
         elsif request.xhr?
+          # for modal display, display just table partial when request made through Javascript
           render partial: 'table'
         end
       end
+
+      # Json return of index
       format.json do
         return nil unless params[:text_output].to_s.include?('select2-code-identifier')
 
@@ -42,6 +57,8 @@ class Tempest::UsersController < AdminController
                  .map { |obj| { 'id': obj.id, 'text': obj&.decorate&.send(identifier) } }
         render json: @users.compact
       end
+
+      # Javascript handling for index action
       format.js do
         @users = @users.page(params[:page]).per(@default_limit)
         if params[:commit] == 'Clear'
@@ -60,6 +77,7 @@ class Tempest::UsersController < AdminController
 
     return unless request.xhr?
 
+    # When javascript request made, display show modal or show screen partial
     if params[:single_show_edit]
       render partial: 'show'
     else
@@ -79,6 +97,8 @@ class Tempest::UsersController < AdminController
     respond_to do |format|
       @user.skip_password_validation = true
       if @user.save
+
+        # devise inviteable for adding an admin user to the system
         @user.invite!(current_user)
         format.html do
           redirect_to edit_admin_user_path(@user)
@@ -120,6 +140,7 @@ class Tempest::UsersController < AdminController
   end
 
   def destroy
+    # destory logic is common between all controllers, so call method
     destroy_common(@user, admin_users_path)
   end
 

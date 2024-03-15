@@ -39,31 +39,13 @@
       <div class="ibox-content pb20">
         <div class="table-responsive">
           <table class="table table-sm  table-striped table-hover  "
-          
+
           >
             <thead>
               <tr>
                 <!-- table headings here -->
-                <% if can_access_attribute?(:name) %>              
-                  <th class="text-left  ">Name</th>
-                <% end %>
-                <% if can_access_attribute?(:suburb) %>              
-                  <th class="text-left  ">Suburb</th>
-                <% end %>
-                <% if can_access_attribute?(:state) %>              
-                  <th class="text-left  ">State</th>
-                <% end %>
-                <% if can_access_attribute?(:gender) %>              
-                  <th class="text-left  ">Gender</th>
-                <% end %>
-                <% if can_access_attribute?(:email) %>              
-                  <th class="text-left  ">Email</th>
-                <% end %>
-                <% if can_access_attribute?(:active) %>              
-                  <th class="text-left  ">Active</th>
-                <% end %>
-                <% if can_access_attribute?(:admin) %>              
-                  <th class="text-left  ">Admin</th>
+                <% if can_access_attribute?(:name) %>
+                  <th class="text-left  ">Column Name</th>
                 <% end %>
                 <% if can?(:read, User) %>
                   <th class="minimal"></th>
@@ -71,12 +53,14 @@
               </tr>
             </thead>
             <tbody >
+            <%# Collection render %>
               <%= render users %>
               <!-- total row start -->
               <!-- total row end -->
             </tbody>
           </table>
           <div class="page-entry">
+            <%# Pagination setup %>
             <%= page_entries_info(@users) %>
           </div>
           <%= paginate(@users, remote: true) %>

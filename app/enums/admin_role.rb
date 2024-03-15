@@ -1,16 +1,6 @@
 ##
-#
+# Enum definition for role of user
 class AdminRole < ClassyEnum::Base
-end
-
-##
-#
-class AdminRole::Basic < AdminRole
-end
-
-##
-#
-class AdminRole::Normal < AdminRole
 end
 
 ##

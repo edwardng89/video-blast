@@ -8,7 +8,7 @@ class PublicController < ActionController::Base
   def status
     commit = `git show --pretty=%H -q`.chomp
     render json: { migration: ActiveRecord::SchemaMigration.last.version,
-                   commit:,
+                   commit: commit,
                    request_ip: request.remote_ip }
   end
 end

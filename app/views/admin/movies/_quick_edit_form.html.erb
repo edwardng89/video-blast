@@ -1,8 +1,0 @@
-<%= simple_nested_form_for [:admin, @movie], validate: true, html: { class: 'form-horizontal' } do |f| %>
-  <div class="ibox float-e-margins mvi-form-content">
-    <!-- fields data go here -->
-    <%= render partial: 'fields', locals: { f: f } %>
-    <%= f.hidden_field :alt_list, value: @alt_list %>
-  </div>
-<% end %>
-<!-- action buttons start -->

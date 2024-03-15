@@ -1,40 +1,9 @@
 <tr  >
   <!-- table columns here  -->
-  <% if can_access_attribute?(:name) %>
+  <%# Table column contents %>
+  <% if can_access_attribute?(:column_name) %>
     <td class="text-left  ">
-      <%= user.name %>
-    </td>
-  <% end %>
-  <% if can_access_attribute?(:suburb) %>
-    <td class="text-left  ">
-      <%= user.suburb %>
-    </td>
-  <% end %>
-  <% if can_access_attribute?(:state) %>
-    <td class="text-left  ">
-      <%= user.state.respond_to?(:text) ? 
-          user.state.text : user.state.to_s %>
-    </td>
-  <% end %>
-  <% if can_access_attribute?(:gender) %>
-    <td class="text-left  ">
-      <%= user.gender.respond_to?(:text) ? 
-          user.gender.text : user.gender.to_s %>
-    </td>
-  <% end %>
-  <% if can_access_attribute?(:email) %>
-    <td class="text-left  ">
-      <%= user.email %>
-    </td>
-  <% end %>
-  <% if can_access_attribute?(:active) %>
-    <td class="text-left  ">
-      <%= boolean_label(user.active, user.human_active) %>
-    </td>
-  <% end %>
-  <% if can_access_attribute?(:admin) %>
-    <td class="text-left  ">
-      <%= boolean_label(user.admin, user.human_admin) %>
+      <%= user.column_name %>
     </td>
   <% end %>
   <% if can?(:update,  (user.respond_to?(:object) ? user.object : user) ) %>
