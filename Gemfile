@@ -187,5 +187,3 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
 end
-
-gem 'mvi-tempest-builder', git: 'ssh://gerrit.mindvision.com.au/lib/mvi_tempest_builder', branch: 'master'
