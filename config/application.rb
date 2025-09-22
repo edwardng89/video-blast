@@ -11,6 +11,8 @@ module VideoBlast
   class Application < Rails::Application
     config.autoload_paths += %W[#{config.root}/config/routes]
 
+    config.active_job.queue_adapter = :sidekiq
+
     ##
     # Make sure classy_enum enums get loaded
     config.autoload_paths += %W[#{config.root}/app/enums]

@@ -1,0 +1,7 @@
+<section id="main-content" data-hook="data-container">
+  <%= render "form", actor: @actor %>
+  <%# Movies only when actor exists %>
+  <% if @actor.persisted? %>
+    <%= render "movies_list", actor: @actor, movies: @movies %>
+  <% end %>
+</section>

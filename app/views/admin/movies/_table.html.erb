@@ -1,0 +1,105 @@
+<% if @main_list_screen %>
+  <!-- screen reference start -->
+<% end %>
+
+<div class="page-content <%= "#{controller.controller_name}_#{controller.action_name}" %>">
+  <div class="ibox">
+    <div class="ibox-header">
+      <div class="mvi-ibox-title">
+        <h3>
+          <%= "<i class='fa fa-fw fa-#{@icon || "film"}'></i>".html_safe %>
+          <%= @title || "Movies" %>
+        </h3>
+      </div>
+
+      <div class="mvi-ibox-buttons">
+        <div class="ibox-tools">
+          <% if @show_buttons %>
+            
+          <% end %>
+
+          <% if can?(:create, Movie) && @allow_create %>
+            <%= link_to new_polymorphic_path([:admin, :movie]), class: 'btn btn-new' do %>
+              Add New
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="ibox-body">
+      <!-- Filter bar -->
+      <div class="ibox-filters">
+        <div class="filters-inner mb20">
+          <%= form_with url: admin_movies_path, method: :get, local: true,
+                        html: { class: "row g-2 align-items-end" } do %>
+
+            <div class="col-md-6">
+              <label class="form-label small mb-1">Search for</label>
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search on Title or Description partial match..." %>
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label small mb-1">Active?</label>
+              <%= select_tag :active,
+                    options_for_select([["All",""],["Active","true"],["Inactive","false"]], params[:active]),
+                    class: "form-select" %>
+            </div>
+
+            <div class="col-md-2">
+              <%= hidden_field_tag :per_page, (params[:per_page].presence || @per_page || 25) %>
+              <%= submit_tag "Go", class: "btn btn-primary w-100" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="ibox-content pb20">
+        <div class="table-responsive">
+          <table class="table table-sm table-striped table-hover" data-table="movies-table" id="movies-table">
+            <thead>
+              <tr>
+                <th class="minimal">Cover</th>
+                <th>Title</th>
+                <th class="minimal">Year</th>
+                <th class="minimal">Rating</th>
+                <th>Description</th>
+                <th class="minimal">Active</th>
+                <% if can?(:read, Movie) %>
+                  <th class="minimal text-end">Actions</th>
+                <% end %>
+              </tr>
+            </thead>
+
+            <tbody>
+              <%= render @movies %> <%# uses _movie.html.erb %>
+            </tbody>
+          </table>
+
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-2">
+            <div class="page-entry">
+              <%= page_entries_info(@movies) %>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+              <span class="text-muted small">Per page</span>
+              <%= form_with url: admin_movies_path, method: :get, local: false,
+                            class: "d-flex align-items-center gap-2" do %>
+                <%= hidden_field_tag :search, params[:search] %>
+                <%= hidden_field_tag :active, params[:active] %>
+                <%= hidden_field_tag :sort,   params[:sort] %>
+                <%= select_tag :per_page,
+                      options_for_select([10,25,50,100].map { |n| [n,n] },
+                                         params[:per_page].presence || @per_page || 25),
+                      class: "form-select form-select-sm",
+                      onchange: "this.form.submit()" %>
+              <% end %>
+            </div>
+          </div>
+          <%= paginate(@movies, remote: true) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

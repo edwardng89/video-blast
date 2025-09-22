@@ -1,0 +1,10 @@
+<section id="main-content" data-hook="data-container">
+  <%= render partial: 'admin/users/form' %> 
+  <%= render partial: 'admin/rentals/table', user: @user,
+           rentals: @rentals,
+           status_filter: @status_filter,
+           date_from: @date_from,
+           date_to: @date_to %> 
+</section>
+
+

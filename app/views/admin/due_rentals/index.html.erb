@@ -1,0 +1,89 @@
+<div class="ibox">
+  <div class="ibox-header">
+   <div class="mvi-ibox-title">
+      <h3>
+            <%= "<i class='fa fa-fw fa-#{@icon || "clipboard-list"}'></i>".html_safe %>
+            <%= @title || "Rental Due" %>
+      </h3>
+    </div>
+  </div>
+
+  <div class="ibox-body">
+    <%= form_with url: admin_due_rentals_path, method: :get, local: true, class: "row g-2 align-items-end" do %>
+        <div class="col-md-3">
+            <label class="form-label">Order Status</label>
+            <%= select_tag :status,
+                options_for_select([["All", ""]] + Rental::STATUSES.map{ |s| [s.humanize, s] }, params[:status]),
+                class: "form-select" %>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Date From</label>
+            <%= date_field_tag :date_from, params[:date_from], class: "form-control" %>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Date To</label>
+            <%= date_field_tag :date_to, params[:date_to], class: "form-control" %>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Search for:</label>
+            <%= text_field_tag :q, params[:q], placeholder: "Search on Title / Order #", class: "form-control" %>
+        </div>
+
+        <!-- Always send show_all=1 so controller skips the default “due now” filter -->
+        <%= hidden_field_tag :show_all, "1" %>
+
+        <div class="col-md-3 mt-2">
+            <%= submit_tag "Go", class: "btn btn-primary w-100" %>
+        </div>
+    <% end %>
+
+
+    <div class="table-responsive mt-3">
+      <table class="table table-sm table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Customer</th>
+            <th>Order Date</th>
+            <th>Return Due</th>
+            <th>Order Status</th>
+            <th>Order Titles</th>
+            <th>Returned?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @rentals.any? %>
+            <% @rentals.each do |r| %>
+              <td><%= r.order_number %></td>
+                    <td><%= [r.user&.first_name, r.user&.last_name].compact.join(" ").presence || r.user&.email %></td>
+                    <td><%= r.rental_date&.strftime("%-d %b %Y") %></td>
+                    <td><%= r.due_date&.strftime("%-d %b %Y") %></td>
+                    <td><%= r.order_status.to_s.humanize %></td>
+                    <td><%= r.order_titles.presence || "—" %></td>
+                    <td class="text-end">
+                      <% if r.order_status != "returned" %>
+                       <%= button_to "Mark as Returned",
+    mark_returned_admin_user_rental_path(r.user, r),
+    method: :patch,
+    data: { confirm: "Mark this order as returned?" },
+    class: "btn btn-sm btn-success" %>
+
+                      <% else %>
+                        <span class="badge bg-success">Returned</span>
+                      <% end %>
+                    </td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr><td colspan="8" class="text-muted">No rentals found</td></tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <div><%= page_entries_info(@rentals) if @rentals.respond_to?(:total_pages) %></div>
+        <%= paginate(@rentals) if @rentals.respond_to?(:total_pages) %>
+      </div>
+    </div>
+  </div>
+</div>

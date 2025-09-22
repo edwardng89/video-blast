@@ -1,0 +1,9 @@
+<p>Hi <%= [@user.first_name, @user.last_name].reject(&:blank?).join(" ").presence || @user.email %>,</p>
+
+<p>Thanks for renting with VideoBlast. Your receipt for rental
+<strong><%= @rental.order_number %></strong> is attached as a PDF.</p>
+
+<p>Rental date: <%= @rental.rental_date.strftime("%d %b %Y") %><br>
+Due date: <%= @rental.due_date.strftime("%d %b %Y") %></p>
+
+<p>Cheers,<br>VideoBlast</p>

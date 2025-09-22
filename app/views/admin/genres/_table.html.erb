@@ -1,0 +1,77 @@
+<!-- app/views/admin/genres/index.html.erb -->
+<div class="page-content">
+  <div class="ibox">
+    <div class="ibox-header">
+      <div class="mvi-ibox-title"><h3><i class="fa fa-tags"></i> <%= @title %></h3></div>
+      <div class="mvi-ibox-buttons">
+        <% if can?(:create, Genre) %>
+          <%= link_to new_admin_genre_path, class: "btn btn-new" do %>Add New<% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="ibox-body">
+      <div class="ibox-filters">
+        <div class="filters-inner mb20">
+          <%= form_with url: admin_genres_path, method: :get, local: true, html: { class: "row g-2 align-items-end" } do %>
+            <div class="col-md-4">
+              <label class="form-label small mb-1">Search for:</label>
+              <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "Search on Name partial match" %>
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label small mb-1">Active?</label>
+              <%= select_tag :active,
+                    options_for_select([["(Any)", ""], ["Active", "true"], ["Inactive", "false"]], params[:active]),
+                    class: "form-select" %>
+            </div>
+
+            <div class="col-md-2">
+              <%= submit_tag "Go", class: "btn btn-primary w-100" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="ibox-content pb20">
+        <div class="table-responsive">
+          <table class="table table-sm table-striped table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th class="text-end">Active</th>
+                <th class="text-end minimal">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @genres.each do |g| %>
+                <tr>
+                  <td><%= g.name %></td>
+                  <td class="text-end">
+                    <% if g.active? %>
+                      <span class="badge bg-success">Active</span>
+                    <% else %>
+                      <span class="badge bg-secondary">Inactive</span>
+                    <% end %>
+                  </td>
+                  <td class="text-end">
+                    <% if can?(:update, g) %>
+                      <%= link_to edit_admin_genre_path(g), class: "btn btn-sm btn-outline-primary" do %>
+                        <i class="fa fa-pencil"></i>
+                      <% end %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <div><%= page_entries_info(@genres) %></div>
+            <%= paginate(@genres) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

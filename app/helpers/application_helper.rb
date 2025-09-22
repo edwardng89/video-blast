@@ -433,4 +433,39 @@ module ApplicationHelper
       type
     end
   end
+  def badge(text, type = :secondary)
+    content_tag(:span, text, class: "badge bg-#{type}")
+  end
+
+  def active_badge(user)
+    user.active? ? badge("Active", :success) : badge("Inactive", :secondary)
+  end
+
+  def admin_badge(user)
+    user.admin? ? badge("Yes", :info) : badge("No", :secondary)
+  end
+
+
+  def gender_options
+    [["Male", "male"], ["Female", "female"], ["Other", "other"]]
+  end
+
+  def state_options
+    %w[ACT NSW NT QLD SA TAS VIC WA]
+  end
+
+  def role_options
+    User.roles.keys.map { |r| [r.titleize, r] } # if enum :role
+  end
+
+  def active_controller?(*names)
+    names.map!(&:to_s)
+    names.include?(controller_name) || names.any? { |n| controller_path == n || controller_path.ends_with?("/#{n}") }
+  end
+
+  # "active" or ""
+  def active_class(flag)
+    flag ? "active" : ""
+  end
+
 end

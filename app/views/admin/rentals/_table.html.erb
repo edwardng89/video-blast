@@ -1,0 +1,148 @@
+<%# ---- locals fallbacks ---- %>
+<% user     = local_assigns[:user]     || @user %>
+<% rentals  = local_assigns[:rentals]  || @rentals %>
+
+<div class="page-content <%= "#{controller.controller_name}_#{controller.action_name}" %>">
+  <div class="ibox">
+    <div class="ibox-header">
+      <div class="mvi-ibox-title">
+        <h3>
+          <%= "<i class='fa fa-fw fa-shopping-cart'></i>".html_safe %>
+          Rentals
+        </h3>
+      </div>
+
+      <div class="mvi-ibox-buttons">
+        <div class="ibox-tools">
+          <% if can?(:create, Rental) && @allow_create %>
+            <%= link_to new_admin_user_rental_path(user), class: 'btn btn-new' do %>
+              Add New
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="ibox-body">
+      <!-- Filter bar -->
+      <div class="ibox-filters">
+        <div class="filters-inner mb20">
+          <%= form_with url: admin_user_rentals_path(user), method: :get, local: true,
+                        html: { class: "row g-2 align-items-end" } do %>
+
+            <div class="col-md-3">
+              <label class="form-label small mb-1">Order #</label>
+              <%= text_field_tag :order_number, params[:order_number],
+                                  class: "form-control", placeholder: "Search by order number" %>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label small mb-1">Status</label>
+              <%= select_tag :order_status,
+                    options_for_select([["All", ""], ["Ongoing", "ongoing"], ["Returned", "returned"], ["Overdue", "overdue"]],
+                                       params[:order_status]),
+                    class: "form-select" %>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label small mb-1">Date From</label>
+              <%= date_field_tag :date_from, params[:date_from], class: "form-control" %>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label small mb-1">Date To</label>
+              <%= date_field_tag :date_to, params[:date_to], class: "form-control" %>
+            </div>
+
+            <div class="col-md-2 mt-2">
+              <%= hidden_field_tag :per_page, (params[:per_page].presence || @per_page || 25) %>
+              <%= submit_tag "Go", class: "btn btn-primary w-100" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="ibox-content pb20">
+        <div class="table-responsive">
+          <table class="table table-sm table-striped table-hover" data-table="rentals-table" id="rentals-table">
+            <thead>
+              <tr>
+                <th>Order #</th>
+                <th>Order Date</th>
+                <th>Return Due</th>
+                <th>Order Status</th>
+                <th>Order Titles</th>
+                <th>Returned?</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% rentals.each do |r| %>
+                <tr>
+                  <td><%= r.order_number %></td>
+                  <td><%= r.rental_date&.strftime("%-d %b %Y") %></td>
+                  <td><%= r.due_date&.strftime("%-d %b %Y") %></td>
+                  <td><%= r.order_status.to_s.humanize %></td>
+                  <td>
+                    <%= r.copies
+                          .map { |c| "#{c.movie&.title} (#{c.copy_format})" }
+                          .join(", ")
+                          .presence || "—" %>
+                  </td>
+                  <td>
+                    <% if r.order_status == "returned" %>
+                      <span class="badge bg-success">Yes</span>
+                    <% else %>
+                      <%= button_to "Mark As Returned",
+      mark_returned_admin_user_rental_path(user, r),
+      method: :patch,
+      form: { data: { turbo_confirm: "Mark this order as returned?" } },
+      class: "btn btn-sm btn-outline-success" %>
+
+                    <% end %>
+                  </td>
+                  <td class="text-end">
+                    <div class="btn-group">
+                      <!-- Pencil edit in modal -->
+                       <%= link_to "Edit",
+      edit_admin_user_rental_path(user, r),
+      class: "btn btn-sm btn-primary",
+      title: "Go to full edit page" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-2">
+            <div class="page-entry">
+              <% if rentals.respond_to?(:total_pages) %>
+                <%= page_entries_info(rentals) %>
+              <% else %>
+                <span class="text-muted"><%= pluralize(rentals.size, "order") %></span>
+              <% end %>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+              <span class="text-muted small">Per page</span>
+              <%= form_with url: admin_user_rentals_path(user), method: :get, local: false,
+                            class: "d-flex align-items-center gap-2" do %>
+                <%= hidden_field_tag :order_number, params[:order_number] %>
+                <%= hidden_field_tag :order_status, params[:order_status] %>
+                <%= hidden_field_tag :date_from, params[:date_from] %>
+                <%= hidden_field_tag :date_to, params[:date_to] %>
+                <%= select_tag :per_page,
+                      options_for_select([10, 25, 50, 100], params[:per_page].presence || @per_page || 25),
+                      class: "form-select form-select-sm",
+                      onchange: "this.form.submit()" %>
+              <% end %>
+            </div>
+          </div>
+
+          <%= paginate(rentals, remote: true) if rentals.respond_to?(:total_pages) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

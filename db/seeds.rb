@@ -10,11 +10,12 @@ ActiveRecord::Base.connection.tables.each do |table|
 end
 # Run User setup regardless of whether seeds fail, should be safe to rerun
 user = User.where(email: 'developer@mindvision.com.au').find_or_initialize_by(
-  role: 'super_user', first_name: 'Mindvision', last_name: 'Interactive'
+  role: 'admin', first_name: 'Mindvision', last_name: 'Interactive'
 )
 user.password = 'password'
 user.password_confirmation = 'password'
 user.save!(validate: false)
+
 
 # If something fails prefer to start again based on the above code to avoid re-runs
 ActiveRecord::Base.transaction do

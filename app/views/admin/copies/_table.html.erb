@@ -1,0 +1,91 @@
+<div class="page-content <%= "#{controller.controller_name}_#{controller.action_name}" %>">
+  <div class="ibox">
+    <div class="ibox-header">
+      <div class="mvi-ibox-title">
+        <h3>
+          <%= "<i class='fa fa-fw fa-copy'></i>".html_safe %>
+          Movie Copies
+        </h3>
+      </div>
+
+      <div class="mvi-ibox-buttons">
+        <div class="ibox-tools">
+          <% if can?(:create, Copy) %>
+            <%= link_to new_admin_movie_copy_path(@movie),
+                        class: 'btn btn-new',
+                        data: { turbo_frame: "copy_form" } do %>
+              Add New
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="ibox-body">
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover" data-table="copies-table" id="copies-table">
+          <thead>
+            <tr>
+              <th>Format</th>
+              <th>Status</th>
+              <th>Rental Cost</th>
+              <th>Copies</th>
+              <th>On Hand</th>
+              <th>Active</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="copies_table_body">
+            <% ((defined?(copies) && copies) || @copies || []).each do |copy| %>
+              <tr id="<%= dom_id(copy) %>">
+                <!-- Format -->
+                <td><%= copy.copy_format %></td>
+
+                <!-- Status badge -->
+                <td>
+                  <% badge_class =
+     case copy.status
+     when "available" then "bg-success"
+     when "rented"    then "bg-warning"
+     when "damaged"   then "bg-danger"
+     else "bg-secondary"
+     end %>
+
+<span class="badge <%= badge_class %>">
+  <%= (copy.status.presence || "unknown").humanize %>
+</span>
+
+                </td>
+
+                <!-- Rental cost (formatted) -->
+               <td><%= number_to_currency(copy.rental_cost_dollars || 0) %></td>
+
+                <!-- Copies -->
+                <td><%= copy.no_of_copies %></td>
+
+                <!-- On Hand (adjust logic if you track availability separately) -->
+                <td><%= copy.on_hand %></td>
+
+                <!-- Active -->
+                <td><%= copy.active? ? "Yes" : "No" %></td>
+
+                <!-- Actions -->
+                <td class="text-end">
+                  <%= link_to "✎", edit_admin_movie_copy_path(@movie, copy),
+                              data: { turbo_frame: "copy_form" },
+                              class: "btn btn-xs btn-link" %>
+                  <%= button_to "🗑", admin_movie_copy_path(@movie, copy),
+                                method: :delete,
+                                form: { data: { turbo_confirm: "Delete this copy?" } },
+                                class: "btn btn-xs btn-link text-danger" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <turbo-frame id="copy_form"></turbo-frame>
+      </div>
+    </div>
+  </div>
+</div>

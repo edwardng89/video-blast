@@ -1,0 +1,126 @@
+<!-- app/views/admin/rentals/index.html.erb -->
+<section id="main-content" data-hook="data-container">
+  <div class="page-content rentals_index">
+    <div class="ibox">
+      <div class="ibox-header">
+        <div class="mvi-ibox-title">
+          <h3><i class="fa fa-fw fa-list"></i> <%= @title %></h3>
+        </div>
+        <div class="mvi-ibox-buttons">
+          <%= link_to "Add New", new_admin_user_rental_path(current_user), class: "btn btn-new" %>
+          <!-- ↑ change current_user to whichever user context you want for creating -->
+        </div>
+      </div>
+
+      <div class="ibox-body">
+        <!-- Filters -->
+        <div class="ibox-filters">
+          <div class="filters-inner mb20">
+            <%= form_with url: admin_rentals_path, method: :get, local: true,
+                          html: { class: "row g-2 align-items-end" } do %>
+
+              <div class="col-md-3">
+                <label class="form-label small mb-1">Order Status</label>
+                <%= select_tag :order_status,
+                      options_for_select([["All",""],["Ongoing","ongoing"],["Returned","returned"],["Overdue","overdue"]],
+                                         params[:order_status]),
+                      class: "form-select" %>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label small mb-1">Date From:</label>
+                <%= date_field_tag :date_from, params[:date_from], class: "form-control", max: Date.current %>
+                <div class="text-danger small">Must be &lt;= Today</div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label small mb-1">Date To:</label>
+                <%= date_field_tag :date_to, params[:date_to], class: "form-control", max: Date.current %>
+                <div class="text-danger small">Must be &lt;= Today</div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label small mb-1">Search for:</label>
+                <%= text_field_tag :q, params[:q], class: "form-control",
+                                   placeholder: "Search on Title partial match" %>
+              </div>
+
+              <div class="col-md-2 mt-2">
+                <%= hidden_field_tag :per_page, (params[:per_page].presence || 25) %>
+                <%= submit_tag "Go", class: "btn btn-primary w-100" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="ibox-content pb20">
+          <div class="table-responsive">
+            <table class="table table-sm table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Customer</th>
+                  <th>Order Date</th>
+                  <th>Return Due</th>
+                  <th>Order Status</th>
+                  <th>Order Titles</th>
+                  <th class="text-end"> </th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @rentals.each do |r| %>
+                  <tr>
+                    <td><%= r.order_number %></td>
+                    <td><%= [r.user&.first_name, r.user&.last_name].compact.join(" ").presence || r.user&.email %></td>
+                    <td><%= r.rental_date&.strftime("%-d %b %Y") %></td>
+                    <td><%= r.due_date&.strftime("%-d %b %Y") %></td>
+                    <td><%= r.order_status.to_s.humanize %></td>
+                    <td><%= r.order_titles.presence || "—" %></td>
+                    <td class="text-end">
+                      <% if r.order_status != "returned" %>
+                        <%= link_to "Mark as Returned",
+                              mark_returned_admin_user_rental_path(r.user, r),
+                              data: { turbo_method: :patch, turbo_confirm: "Mark this order as returned?" },
+                              class: "btn btn-sm btn-success" %>
+                      <% else %>
+                        <span class="badge bg-success">Returned</span>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-2">
+              <div class="page-entry">
+                <% if @rentals.respond_to?(:total_pages) %>
+                  <%= page_entries_info(@rentals) %>
+                <% else %>
+                  <span class="text-muted"><%= pluralize(@rentals.size, "order") %></span>
+                <% end %>
+              </div>
+
+              <div class="d-flex align-items-center gap-2">
+                <span class="text-muted small">Per page</span>
+                <%= form_with url: admin_rentals_path, method: :get, local: true,
+                              class: "d-flex align-items-center gap-2" do %>
+                  <%= hidden_field_tag :order_status, params[:order_status] %>
+                  <%= hidden_field_tag :date_from, params[:date_from] %>
+                  <%= hidden_field_tag :date_to,   params[:date_to] %>
+                  <%= hidden_field_tag :q,         params[:q] %>
+                  <%= select_tag :per_page,
+                        options_for_select([10,25,50,100], params[:per_page].presence || 25),
+                        class: "form-select form-select-sm",
+                        onchange: "this.form.submit()" %>
+                <% end %>
+              </div>
+            </div>
+
+            <%= paginate(@rentals) if @rentals.respond_to?(:total_pages) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

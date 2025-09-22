@@ -1,0 +1,128 @@
+<div class="ibox">
+  <div class="ibox-body">
+    <div class="ibox-filters">
+      <p class="required-field">
+        All fields marked with <span class="red-asterisk">*</span> are required
+      </p>
+    </div>
+
+    <div class="ibox-content">
+      <!-- Row 1: title / content rating / released on -->
+      <div class="row mb20">
+        <% if can_access_attribute?(:title) %>
+          <div class="col-sm-5">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :title,
+                            label: '<span class="red-asterisk">*</span> Title'.html_safe,
+                            input_html: { class: "form-control", spellcheck: true },
+                            readonly: cannot_modify_attribute?(:title) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <% if can_access_attribute?(:content_rating) %>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :content_rating,
+                            collection: [
+                              ["G", "G"], ["PG", "PG"], ["M", "M"],
+                              ["MA15+", "MA15+"], ["R18+", "R18+"], ["X18+", "X18+"]
+                            ],
+                            include_blank: "Please Select",
+                            label: "Content Rating",
+                            input_html: { class: "form-control" },
+                            readonly: cannot_modify_attribute?(:content_rating) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <% if can_access_attribute?(:released_on) %>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <div class="control-wrapper">
+                <%= f.input :released_on,
+                            as: :date,
+                            label: "Release Date",
+                            input_html: { class: "form-control" },
+                            readonly: cannot_modify_attribute?(:released_on) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+    <div class="row mb20">
+        <% if can_access_attribute?(:cover) %>
+            <div class="col-sm-8">
+              <div class="form-group">
+                  <div class="control-wrapper">
+                  <%= f.input :cover,
+                              as: :file,
+                              label: "Poster Image",
+                              input_html: { class: "form-control-file"},
+                              readonly: cannot_modify_attribute?(:cover) %>
+                  <small class="form-text text-muted">Click on poster image box</small>
+                  </div>
+              </div>
+            </div>
+
+            <% if @movie&.cover&.attached? %>
+            <div class="col-sm-6">
+            <div class="form-group">
+                <label>Current Poster</label><br>
+                <%= image_tag @movie.image_thumb %>
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-inline">
+                <%= check_box_tag "movie[remove_cover]", "1", false %>
+                Remove poster
+                </label>
+            </div>
+            </div>
+        <% end %>
+    <% end %>
+
+
+
+
+    <div class="row mb20">
+        <% if can_access_attribute?(:description) %>
+          <div class="col-sm-20">
+            <%= f.input :description,
+                        as: :text,
+                        label: "Description",
+                        input_html: { class: "form-control", rows: 5, spellcheck: true },
+                        readonly: cannot_modify_attribute?(:description) %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="row mb20">
+        <% if can_access_attribute?(:active) %>
+          <div class="col-sm-2 d-flex align-items-end">
+            <label class="checkbox-inline mt25">
+              <%= f.input :active,
+                          as: :boolean,
+                          label: "Active",
+                          input_html: { class: "checkbox" },
+                          readonly: cannot_modify_attribute?(:active) %>
+            </label>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <%= f.label :genre_ids, "Genres" %>
+      <%= f.collection_select :genre_ids,
+            Genre.order(:name), :id, :name,
+            { include_hidden: false },                              
+            { multiple: true, class: "form-control select2" } %> 
+    </div>
+  </div>
+</div>

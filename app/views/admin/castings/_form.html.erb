@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <h3 class="modal-title">Edit Movie Actor</h3>
+  <div class="modal-actions">
+    <%= link_to "Close",
+            edit_admin_movie_path(@movie),
+            class: "btn btn-secondary",
+            data: { turbo_frame: "_top" } %>
+    <%= button_tag "Save", type: "submit", form: dom_id(@casting, :form), class: "btn btn-success" %>
+    <% unless @casting.new_record? %>
+      <%= button_to "Delete", admin_movie_casting_path(@movie, @casting),
+                    method: :delete,
+                    form: { data: { turbo_confirm: "Are you sure you want to remove this actor?" } },
+                    class: "btn btn-danger" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="modal-body">
+  <%= simple_form_for [:admin, @movie, @casting],
+                      html: { id: dom_id(@casting, :form), class: "form-horizontal" } do |f| %>
+    <div class="row">
+      <!-- Movie Title (read-only) -->
+      <div class="col-md-6">
+        <div class="form-group">
+          <%= f.label :movie, "Movie Title", class: "control-label" %>
+          <input type="text" class="form-control" value="<%= @movie.title %>" readonly>
+        </div>
+      </div>
+
+      <!-- Actor select -->
+      <div class="col-md-6">
+        <div class="form-group">
+          <%= f.label :actor_id, "Actor", class: "control-label" %>
+          <%= f.collection_select :actor_id,
+                Actor.order(:first_name), :id, :first_name,
+                { include_blank: "Please Select..." },
+                { class: "form-control select2" } %>
+        </div>
+      </div>
+    </div>
+    
+  <% end %>
+</div>

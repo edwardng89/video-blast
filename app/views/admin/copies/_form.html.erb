@@ -1,0 +1,88 @@
+<% movie = local_assigns[:movie] || @movie %>
+<% copy  = local_assigns[:copy]  || @copy  %>
+
+<turbo-frame id="copy_form">
+  <div class="modal-header">
+    <h3 class="modal-title"><%= copy.persisted? ? "Edit Movie Copy" : "New Movie Copy" %></h3>
+    <div class="modal-actions">
+      <%= link_to "Close",
+                  edit_admin_movie_path(movie),
+                  class: "btn btn-secondary",
+                  data: { turbo_frame: "_top" } %>
+
+      <%= button_tag "Save",
+                     type: "submit",
+                     form: dom_id(copy, :form),
+                     class: "btn btn-success" %>
+
+      <% if copy.persisted? %>
+        <%= button_to "Delete",
+                      admin_movie_copy_path(movie, copy),
+                      method: :delete,
+                      form: { data: { turbo_confirm: "Delete this copy?" } },
+                      class: "btn btn-danger" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <%= simple_form_for [:admin, movie, copy],
+                        as: :copy,
+                        html: { id: dom_id(copy, :form), class: "form-horizontal" } do |f| %>
+
+      <%= f.error_notification %>
+
+      <!-- Movie Title (read-only) -->
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <label class="control-label">Movie Title</label>
+          <input type="text" class="form-control" value="<%= movie.title %>" readonly>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <!-- FORMAT -->
+        <div class="col-md-4">
+          <%= f.input :copy_format,
+                      label: "Format",
+                      collection: (defined?(Copy::FORMATS) ? Copy::FORMATS : ["DVD","Blu-ray","Digital HD","Digital SD","VHS"]),
+                      prompt: "Please Select..." %>
+        </div>
+
+        <!-- COPIES -->
+        <div class="col-md-4">
+          <%= f.input :no_of_copies,
+                      label: "Copies",
+                      as: :integer,
+                      input_html: { min: 0, step: 1 } %>
+        </div>
+
+        <!-- RENTAL COST (in dollars, stored as cents) -->
+        <div class="col-md-4">
+          <%= f.input :rental_cost_dollars,
+            label: "Rental cost $",
+            as: :decimal,
+            input_html: { 
+              min: 0, 
+              step: 0.01, 
+              value: f.object.rental_cost_dollars 
+            } %>
+
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-md-3 d-flex align-items-center">
+          <%= f.input :active, as: :boolean, label: "Active" %>
+        </div>
+        <div class="col-md-9">
+          <%= f.input :status,
+            collection: Copy::STATUSES.map { |s| [s.humanize, s] },
+            prompt: "Please Select...",
+            label: "Status" %>
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+</turbo-frame>

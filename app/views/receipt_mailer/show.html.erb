@@ -1,0 +1,31 @@
+<h2>Receipt for Rental <%= rental.order_number %></h2>
+
+<p>
+  <strong>Customer:</strong>
+  <%= [user.first_name, user.last_name].reject(&:blank?).join(" ").presence || user.email %><br>
+  <strong>Rental Date:</strong> <%= rental.rental_date.strftime("%d %b %Y") %><br>
+  <strong>Due Date:</strong> <%= rental.due_date.strftime("%d %b %Y") %>
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Movie</th>
+      <th>Format</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% rental.rental_items.includes(copy: :movie).each do |item| %>
+      <tr>
+        <td><%= item.copy.movie.title %></td>
+        <td><%= item.copy.copy_format %></td>
+        <td><%= number_to_currency(item.copy.rental_cost.to_f / 100) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p class="total">
+  <strong>Total:</strong> <%= number_to_currency(rental.total_price) %>
+</p>

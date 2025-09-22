@@ -1,72 +1,120 @@
 <% if @main_list_screen %>
   <!-- screen reference start -->
+  
 <% end %>
+
+
+
 <div class="page-content <%= "#{controller.controller_name}_#{controller.action_name}" %>">
-  <!-- content box -->
   <div class="ibox">
     <div class="ibox-header">
       <div class="mvi-ibox-title">
-        <h3><%= "<i class='fa fa-fw fa-#{@icon}'></i>".html_safe if @icon.present? %> <%= @title %></h3>
+        <h3>
+          <%= "<i class='fa fa-fw fa-users'></i>".html_safe %>
+          <%= @title || "Users" %>
+        </h3>
       </div>
+  
       <div class="mvi-ibox-buttons">
         <div class="ibox-tools">
-          <!-- list actions start-->
-          <!-- list actions end -->
+          <%# export/controls if you use them %>
+          <% if @show_buttons %>
+            <%= render partial: 'shared/mvi_control_buttons',
+                       locals: { path: admin_users_path, table_name: 'users',
+                                 xls: admin_users_path(format: :xls),
+                                 csv: admin_users_path(format: :csv),
+                                 pdf: admin_users_path(format: :pdf) } %>
+          <% end %>
           <% if can?(:create, User) && @allow_create %>
-            <%= link_to new_polymorphic_path([:admin, :user]),
-              class: 'btn btn-new' do %>
+            <%= link_to new_polymorphic_path([:admin, :user]), class: 'btn btn-new' do %>
               Add New
             <% end %>
           <% end %>
         </div>
-        <% if @show_buttons %>
-          <%= render partial: 'shared/mvi_control_buttons',
-                     locals: { path: admin_users_path, table_name: 'users',
-              xls: admin_users_path(format: :xls),
-              csv: admin_users_path(format: :csv) } %>
-        <% end %>
       </div>
     </div>
+
     <div class="ibox-body">
+      <%# Filter bar – matches Figma: search + Active? + Go %>
       <div class="ibox-filters">
         <div class="filters-inner mb20">
-          <div class="row">
-            <!-- Filter base start -->
-            <!-- Filter base end -->
-          </div>
+          <%= form_with url: admin_users_path, method: :get, local: true, html: { class: "row g-2 align-items-end" } do %>
+            <div class="col-md-6">
+              <label class="form-label small mb-1">Search on First Name, Last Name, Email (partial)</label>
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Name / Email contains..." %>
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label small mb-1">Active?</label>
+              <%= select_tag :active,
+                  options_for_select([["All", ""], ["Active", "true"], ["Inactive", "false"]], params[:active]),
+                  class: "form-select" %>
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label small mb-1">Sort by</label>
+              <%= select_tag :sort,
+                  options_for_select(Tempest::User.sort_options_for_select,
+                    params[:sort].presence || Tempest::User.default_sort_option),
+                  class: "form-select" %>
+            </div>
+
+            <div class="col-md-2">
+              <%= hidden_field_tag :per_page, (params[:per_page].presence || @per_page || 25) %>
+              <%= submit_tag "Go", class: "btn btn-primary w-100" %>
+            </div>
+          <% end %>
         </div>
       </div>
+
       <div class="ibox-content pb20">
         <div class="table-responsive">
-          <table class="table table-sm  table-striped table-hover  "
-
-          >
+          <table class="table table-sm table-striped table-hover" data-table="users-table" id="users-table">
             <thead>
               <tr>
-                <!-- table headings here -->
+                <%# Name %>
                 <% if can_access_attribute?(:name) %>
-                  <th class="text-left  ">Column Name</th>
+                  <th class="text-left">Name</th>
                 <% end %>
+                <th>Suburb</th>
+                <th>State</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th>Active</th>
                 <% if can?(:read, User) %>
-                  <th class="minimal"></th>
+                  <th class="minimal text-end">Actions</th>
                 <% end %>
               </tr>
             </thead>
-            <tbody >
-            <%# Collection render %>
-              <%= render users %>
-              <!-- total row start -->
-              <!-- total row end -->
+
+            <tbody>
+             <%= render @users %> <%# will use _user.html.erb %>
             </tbody>
           </table>
-          <div class="page-entry">
-            <%# Pagination setup %>
-            <%= page_entries_info(@users) %>
+
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-2">
+            <div class="page-entry">
+              <%= page_entries_info(@users) %>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+              <span class="text-muted small">Per page</span>
+              <%= form_with url: admin_users_path, method: :get, local: false, class: "d-flex align-items-center gap-2" do %>
+                <%= hidden_field_tag :q, params[:q] %>
+                <%= hidden_field_tag :active, params[:active] %>
+                <%= select_tag :per_page,
+                      options_for_select([10, 25, 50, 100].map { |n| [n, n] }, params[:per_page].presence || @per_page || 25),
+                      class: "form-select form-select-sm",
+                      onchange: "this.form.submit()" %>
+              <% end %>
+            </div>
           </div>
+
           <%= paginate(@users, remote: true) %>
         </div>
       </div>
     </div>
   </div>
-  <!-- /- content box -->
 </div>
+

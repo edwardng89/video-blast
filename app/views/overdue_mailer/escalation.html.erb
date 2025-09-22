@@ -1,0 +1,11 @@
+<p>Hi <%= @user.first_name || @user.email %>,</p>
+<p>These rentals are overdue. Please return them as soon as possible:</p>
+<ul>
+  <% @rentals.each do |r| %>
+    <li>
+      <strong><%= r.order_titles.presence || "Order ##{r.order_number}" %></strong><br>
+      Due: <%= r.due_date&.strftime("%-d %b %Y") %>
+    </li>
+  <% end %>
+</ul>
+<p>Thanks, VideoBlast</p>

@@ -1,0 +1,91 @@
+<%# app/views/admin/rentals/_form.html.erb %>
+<% user   = local_assigns[:user]   || @user %>
+<% rental = local_assigns[:rental] || @rental %>
+
+<turbo-frame id="rental_form">
+  <div class="modal-header">
+    <h3 class="modal-title"><%= rental.persisted? ? "Edit Order" : "New Order" %></h3>
+    <div class="modal-actions">
+      <%= link_to "Close",
+                  edit_admin_user_path(user),
+                  class: "btn btn-secondary",
+                  data: { turbo_frame: "_top" } %>
+
+      <%= button_tag "Save",
+                     type: "submit",
+                     form: dom_id(rental, :form),
+                     class: "btn btn-success" %>
+
+      <% if rental.persisted? %>
+        <%= button_to "Delete",
+                      admin_user_rental_path(user, rental),
+                      method: :delete,
+                      form: { data: { turbo_confirm: "Delete this order?" } },
+                      class: "btn btn-danger" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <%= simple_form_for [:admin, user, rental],
+                        as: :rental,
+                        html: { id: dom_id(rental, :form), class: "form-horizontal" } do |f| %>
+
+      <%= f.error_notification %>
+
+      <!-- User (read-only) -->
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <label class="control-label">User</label>
+          <input type="text"
+                 class="form-control"
+                 value="<%= [user.first_name, user.last_name].compact.join(' ').presence || user.email %>"
+                 readonly>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <!-- Order Date -->
+        <div class="col-md-4">
+          <%= f.input :rental_date, as: :date, label: "Order Date" %>
+        </div>
+
+        <!-- Return Date -->
+        <div class="col-md-4">
+          <%= f.input :due_date, as: :date, label: "Return Date" %>
+        </div>
+
+        <!-- Status -->
+        <div class="col-md-4">
+          <%= f.input :order_status,
+                      collection: [["Ongoing","ongoing"], ["Returned","returned"], ["Overdue","overdue"]],
+                      prompt: "Please Select...",
+                      label: "Status" %>
+        </div>
+      </div>
+
+      <!-- Movie / Format (multi-select) -->
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <label class="control-label d-block">Movie / Format
+            <span class="text-danger small ms-2">Multi-select</span>
+          </label>
+
+          <% scope = Copy.includes(:movie).references(:movie).order("movies.title ASC") %>
+          <%= f.input :copy_ids,
+                      as: :select,
+                      collection: scope.map { |c| [ "#{c.movie&.title.presence || 'Untitled'} (#{c.copy_format})", c.id ] },
+                      input_html: { multiple: true, class: "form-select" },
+                      include_hidden: false,
+                      label: false,
+                      prompt: "Select one or more..." %>
+
+          <div class="text-danger small mt-2">
+            Show as: Movie Title (format)<br>
+            only return formats that the movie is available in
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</turbo-frame>

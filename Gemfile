@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
+gem 'awesome_nested_set'
+gem 'active_storage_validations'
 gem 'cancancan'
 gem 'classy_enum'
 gem 'database_cleaner'
@@ -10,7 +12,8 @@ gem 'dropzonejs-rails'
 gem 'factory_bot_rails'
 gem 'faker'
 gem 'fog-aws'
-gem 'has_scope'
+gem 'has_scope' # If we’re using the has_scope gem, apply_scopes adds any filters defined in the controller.
+gem "image_processing"
 gem 'jquery-turbolinks'
 gem 'mini_magick'
 gem 'money-rails'
@@ -21,15 +24,20 @@ gem 'phonelib'
 gem 'quick_edit', git: 'ssh://gerrit.mindvision.com.au/lib/mvi-admin/quick-edit'
 gem 'rails_sortable' # TODO: situational
 gem 'rspec-rails'
-gem 'sidekiq', '< 7'
+gem 'sidekiq'
 gem 'simple_form'
 gem 'userstamper', github: 'mindvision/userstamper'
-# gem 'fog-aws' # Was getting a duplicate in Elite
-gem 'awesome_nested_set'
+
+
+
+gem 'mini_magick'
 gem 'country_select'
 gem 'momentjs-rails' # TODO: change to CDN
 gem 'mvi_validators', git: 'ssh://gerrit.mindvision.com.au/lib/mvi_validators'
 gem 'spinjs-rails' # TODO: change to CDN
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'   # packaged wkhtmltopdf executable
+
 
 # used for breadcrumbs in replacement of crummy
 gem 'breadcrumbs_on_rails'
@@ -106,6 +114,10 @@ gem 'rubocop-rails', require: false
 gem 'faraday'
 gem 'roo'
 
+# PDF
+gem 'prawn'
+gem 'prawn-table'
+
 # Methods to define a calendar
 gem 'simple_calendar'
 
@@ -159,7 +171,7 @@ gem 'tzinfo-data', platforms: %i[windows jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
-
+gem "bootstrap"
 # Use Sass to process CSS
 gem 'sassc-rails'
 

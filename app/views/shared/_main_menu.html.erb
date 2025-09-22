@@ -4,7 +4,8 @@
     <nav class="gn-menu-wrapper">
       <div class="gn-scroller">
         <ul class="gn-menu">
-          <% if can?(:read, User)  %>
+
+          <% if can?(:read, User) %>
             <li class="menu-option <%= is_active_controller('users') %>">
               <%= link_to admin_users_path do %>
                 <i class="fa fa-fw fa-angle-double-right"></i>
@@ -12,20 +13,66 @@
               <% end %>
             </li>
           <% end %>
-          <!-- nav menu here -->
+
+          <% if can?(:read, Movie) %>
+            <li class="menu-option <%= is_active_controller('movies') %>">
+              <%= link_to admin_movies_path do %>
+                <i class="fa fa-fw fa-angle-double-right"></i>
+                Movie
+              <% end %>
+            </li>
+          <% end %>
+
+          <% if can?(:access, :lookups) %>
+            <% open_lookups = active_controller?('actors','genres') %>
+              <li class="menu-option has-sub <%= active_class(active_controller?('actors','genres')) %>">
+                <a class="menu-link d-flex align-items-center"
+                  data-bs-toggle="collapse"
+                  href="#lookupsMenu"
+                  role="button"
+                  aria-expanded="<%= open_lookups %>"
+                  aria-controls="lookupsMenu">
+                  <i class="fa fa-fw fa-angle-double-right me-2"></i>
+                  Lookups
+                  <span class="caret ms-auto">▾</span>
+                </a>
+
+                <ul id="lookupsMenu"
+                    class="sub-menu collapse <%= 'show' if open_lookups %>">
+                  <% if can?(:read, Actor) %>
+                    <li class="<%= active_class(active_controller?('actors')) %>">
+                      <%= link_to "Actors", admin_actors_path, class: "sub-link" %>
+                    </li>
+                  <% end %>
+                  <% if can?(:read, Genre) %>
+                    <li class="<%= active_class(active_controller?('genres')) %>">
+                      <%= link_to "Genres", admin_genres_path, class: "sub-link" %>
+                    </li>
+                  <% end %>
+                </ul>
+              </li>
+          <% end %>
+
+          <% if can?(:read, Rental) %>
+            <li class="menu-option <%= is_active_controller('rentals') %>">
+              <%= link_to admin_due_rentals_path do %>
+                <i class="fa fa-fw fa-angle-double-right"></i>
+                Rental
+              <% end %>
+            </li>
+          <% end %>
+
         </ul>
       </div>
     </nav>
   </li>
+
   <li class='header-logo-container'>
     <div class='header-logo'>
       <%= link_to '', admin_root_path, class: 'menu-logo' %>
     </div>
   </li>
-  <!--  optional top menu items-->
-  <!--    <li>-->
-  <!--      <a href="#"><span>Test 2</span></a>-->
-  <!--    </li>-->
+
   <li class="logout-btn">
     <%= link_to destroy_user_session_path, class: 'codrops-icon codrops-icon-drop', method: :delete do %>
       [<%= current_user.to_s %>] Log Out

@@ -1,0 +1,13 @@
+:queues:
+  - [mailers, 2]
+  - default
+
+:schedule:
+  overdue_notifier_daily:
+    cron: "0 9 * * *"
+    class: "ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper"
+    queue: "mailers"
+    args:
+      job_class: "OverdueNotifierJob"
+      arguments:
+        - "<%= Date.today.to_s %>"   # optional argument; you can omit this line

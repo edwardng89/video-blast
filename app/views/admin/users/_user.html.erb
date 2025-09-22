@@ -1,15 +1,37 @@
-<tr  >
+
+<tr>
   <!-- table columns here  -->
-  <%# Table column contents %>
-  <% if can_access_attribute?(:column_name) %>
+  <% if can_access_attribute?(:first_name) %>
     <td class="text-left  ">
-      <%= user.column_name %>
+      <%= user.first_name %>
+    </td>
+    <td class="text-left  ">
+      <%= user.suburb %>
+    </td>
+    <td class="text-left  ">
+      <%= user.state %>
+    </td>
+    <td class="text-left  ">
+      <%= user.gender %>
+    </td>
+    <td class="text-left  ">
+      <%= user.email %>
+    </td>
+    <td class="text-left  ">
+      <%= user.role.titleize %> 
+    </td>
+    <td class="text-left  ">
+      <span class="badge <%= user.active? ? 'bg-success' : 'bg-secondary' %>">
+      <%= user.active? ? 'Active' : 'Inactive' %>
+    </span>
     </td>
   <% end %>
+  
   <% if can?(:update,  (user.respond_to?(:object) ? user.object : user) ) %>
     <% icon = '<i class="fas fa-pencil-alt" aria-hidden="true"></i>' %>
     <% full_icon = '<i class="fas fa-edit" aria-hidden="true"></i>' %>
-    <% form_path = edit_polymorphic_path([:admin, user], alt_list: 'user' ) %>
+
+    <% form_path = edit_admin_user_path(user) %>
   <% elsif can?(:read,  (user.respond_to?(:object) ? user.object : user) )  %>
     <% icon = '<i class="fas fa-search" aria-hidden="true"></i>' %>
     <% full_icon = '
@@ -21,7 +43,7 @@
   <td class="minimal">
     <% if can?(:update, (user.respond_to?(:object) ? user.object : user) ) %>
       <%= link_to(full_icon.html_safe,
-                  edit_polymorphic_path([:admin, user]),
+                  edit_admin_user_path(user),
           title: 'Edit user',
           class: 'index-link') %>
     <% end %>

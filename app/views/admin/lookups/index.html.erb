@@ -1,0 +1,19 @@
+<!-- app/views/admin/lookups/index.html.erb -->
+<div class="page-content">
+  <div class="ibox">
+    <div class="ibox-header bg-primary text-white">
+      <div class="mvi-ibox-title">
+        <h3><i class="fa fa-book"></i> Lookups</h3>
+      </div>
+    </div>
+
+    <div class="ibox-body">
+      <div class="lookup-card">
+        <ul class="lookup-list">
+          <li><%= link_to "Actors",  admin_actors_path,  class: "lookup-link" %></li>
+          <li><%= link_to "Genres",  admin_genres_path,  class: "lookup-link" %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

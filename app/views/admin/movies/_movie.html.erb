@@ -1,0 +1,44 @@
+<tr id="movie_<%= movie.id %>">
+  <!-- Cover-->
+  <td class="align-middle" style="width:64px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+    <%= image_tag movie.display_image if movie.cover.attached? %>
+  </td>
+
+  <!-- Title -->
+  <td class="align-middle" style="width:180px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+    <%= link_to movie.title, [:admin, movie] %>
+  </td>
+
+  <!-- Year -->
+  <td class="align-middle" style="width:70px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+    <%= movie.released_on&.year %>
+  </td>
+
+  <!-- Rating -->
+  <td class="align-middle" style="width:70px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+    <%= movie.content_rating %>
+  </td>
+
+  <!-- Description -->
+  <td class="align-middle" style="width:auto;">
+    <%= truncate(movie.description.to_s, length: 220) %>
+  </td>
+
+  <!-- Active -->
+  <td class="align-middle" style="width:70px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+    <span class="badge <%= movie.active? ? 'bg-success' : 'bg-secondary' %>">
+      <%= movie.active? ? 'Active' : 'Inactive' %>
+    </span>
+  </td>
+
+  <% if can?(:read, Movie) %>
+    <!-- Actions (minimal) -->
+    <td class="align-middle text-end" style="width:100px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+      <% if can?(:update, movie) %>
+        <%= link_to edit_admin_movie_path(movie), class: "btn btn-sm btn-outline-primary" do %>
+          <i class="fa fa-pen"></i>
+        <% end %>
+      <% end %>
+    </td>
+  <% end %>
+</tr>

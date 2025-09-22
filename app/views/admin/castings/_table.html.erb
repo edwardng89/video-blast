@@ -1,0 +1,82 @@
+<div class="page-content <%= "#{controller.controller_name}_#{controller.action_name}" %>">
+  <div class="ibox">
+    <div class="ibox-header">
+      <div class="mvi-ibox-title">
+        <h3>
+          <%= "<i class='fa fa-fw fa-#{@icon || "film"}'></i>".html_safe %>
+           Castings
+        </h3>
+      </div>
+
+      <div class="mvi-ibox-buttons">
+        <div class="ibox-tools">
+          <% if can?(:create, Casting) %>
+            <%= link_to new_admin_movie_casting_path(@movie),
+                        class: 'btn btn-new',
+                        data: { turbo_frame: "casting_form" } do %>
+              Add New
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="ibox-body">
+      <div class="ibox-content pb20">
+        <div class="table-responsive">
+          <table class="table table-sm table-striped table-hover" data-table="castings-table" id="castings-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <% if can?(:update, Casting) || can?(:destroy, Casting) %>
+                  <th class="minimal text-end">Actions</th>
+                <% end %>
+              </tr>
+            </thead>
+
+            <tbody id="castings_table_body">
+              <% @castings.each do |casting| %>
+                <tr id="<%= dom_id(casting) %>">
+                  <td><%= casting.actor&.first_name %></td>
+                  <td class="text-end">
+                    <% if can?(:update, casting) %>
+                      <%= link_to "✎", edit_admin_movie_casting_path(@movie, casting),
+                                  data: { turbo_frame: "casting_form" },
+                                  class: "btn btn-xs btn-link" %>
+                    <% end %>
+                    <% if can?(:destroy, casting) %>
+                      <%= button_to "🗑", admin_movie_casting_path(@movie, casting),
+                                    method: :delete,
+                                    form: { data: { turbo_confirm: "Remove this actor?" } },
+                                    class: "btn btn-xs btn-link text-danger" %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-2">
+            <div class="page-entry">
+              <%= page_entries_info(@castings) %>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+              <span class="text-muted small">Per page</span>
+              <%= form_with url: admin_movie_castings_path(@movie), method: :get, local: true,
+                            class: "d-flex align-items-center gap-2" do %>
+                <%= hidden_field_tag :search, params[:search] %>
+                <%= select_tag :per_page,
+                      options_for_select([10,25,50,100].map { |n| [n,n] },
+                                         params[:per_page].presence || @per_page || 25),
+                      class: "form-select form-select-sm",
+                      onchange: "this.form.submit()" %>
+              <% end %>
+            </div>
+          </div>
+          <%= paginate(@castings, remote: true) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<% actor = local_assigns[:actor] || @actor %>
+
+<div class="ibox">
+  <div class="ibox-header">
+    <div class="mvi-ibox-title">
+      <h3><i class="fa fa-user"></i> <%= actor.persisted? ? "Edit Actor" : "New Actor" %></h3>
+    </div>
+
+    <div class="mvi-ibox-buttons">
+      <div class="ibox-tools">
+        <%= link_to "Back", admin_actors_path, class: "btn btn-secondary" %>
+
+        <%= button_tag "Save",
+                       type: "submit",
+                       form: dom_id(actor, :form),
+                       class: "btn btn-success" %>
+
+        <% if actor.persisted? && can?(:destroy, actor) %>
+          <%= button_to "Delete",
+                        admin_actor_path(actor),
+                        method: :delete,
+                        form: { data: { turbo_confirm: "Delete this actor?" } },
+                        class: "btn btn-danger" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="ibox-body">
+    <%= form_with model: [:admin, actor],
+                  id: dom_id(actor, :form),
+                  local: true do |f| %>
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label class="form-label">First Name</label>
+          <%= f.text_field :first_name, class: "form-control" %>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Last Name</label>
+          <%= f.text_field :last_name, class: "form-control" %>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Gender</label>
+          <%= f.select :gender,
+                       (defined?(Actor::GENDERS) ? Actor::GENDERS : %w[male female non_binary other]).map { |g| [g.humanize, g] },
+                       { include_blank: "Please Select..." },
+                       class: "form-select" %>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Birth Date</label>
+          <%= f.date_field :birth_date, class: "form-control" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

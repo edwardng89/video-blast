@@ -1,0 +1,26 @@
+<!-- screen reference start -->
+<!--above-placeholders-->
+
+<div class="ibox">
+  <div class="ibox-header">
+    <div class="mvi-ibox-title" data-hook="portlet-bar-container">
+      <h3><%= render 'shared/title' %></h3>
+    </div>
+    <div class="mvi-ibox-buttons">
+      <% if can?(:update, @movie) %>
+        <%= link_to 'Edit', '#',
+              class: 'btn btn-action pull-right single-show-edit btn-view',
+              data: { 'form-url': edit_polymorphic_path([:admin, @movie]) } %>
+      <% end %>
+      <%= link_to polymorphic_path([:admin, Movie]),
+            class: 'btn btn-close pull-right' do %>
+        Back
+      <% end %>
+    </div>
+  </div>
+  <div class="ibox-body">
+    <div class="ibox-content" data-hook="page-content-container">
+      <%= render partial: 'show_fields', locals: { movie: @movie } %>
+    </div>
+  </div>
+</div>

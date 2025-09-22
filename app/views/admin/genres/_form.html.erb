@@ -1,0 +1,48 @@
+<% genre = local_assigns[:genre] || @genre %>
+
+<turbo-frame id="modal_frame">
+  <!-- Modal header -->
+  <div class="modal-header">
+    <h3 class="modal-title"><%= genre.persisted? ? "Edit Genre" : "New Genre" %></h3>
+    <div class="modal-actions">
+      <%= link_to "Close",
+                  admin_genres_path,
+                  class: "btn btn-secondary",
+                  data: { turbo_frame: "_top" } %>
+
+      <%= button_tag "Save",
+                     type: "submit",
+                     form: dom_id(genre, :form),
+                     class: "btn btn-success" %>
+
+      <% if genre.persisted? %>
+        <%= button_to "Delete",
+                      admin_genre_path(genre),
+                      method: :delete,
+                      form: { data: { turbo_confirm: "Delete this genre?" } },
+                      class: "btn btn-danger" %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Modal body -->
+  <div class="modal-body bg-light">
+    <%= form_with model: [:admin, genre],
+                  id: dom_id(genre, :form),
+                  local: true,
+                  html: { class: "form-horizontal" } do |f| %>
+
+      <div class="row g-4 align-items-center">
+        <div class="col-md-4">
+          <%= f.label :name, "Genre Name:", class: "form-label fw-bold text-primary" %>
+          <%= f.text_field :name, class: "form-control" %>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-center gap-2 mt-4">
+          <%= f.check_box :active, class: "form-check-input", id: dom_id(genre, :active) %>
+          <%= f.label :active, "Active", class: "form-check-label mb-0", for: dom_id(genre, :active) %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</turbo-frame>

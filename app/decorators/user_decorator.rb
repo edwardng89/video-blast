@@ -1,4 +1,4 @@
-class UserDecorator < ApplicationDecorator
+class UserDecorator < Draper::Decorator
   delegate_all
   # Methods Start
   # Methods End

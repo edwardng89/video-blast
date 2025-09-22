@@ -1,0 +1,72 @@
+<% actor  = local_assigns[:actor]  || @actor %>
+<% movies = local_assigns[:movies] || @movies %>
+
+<div class="ibox mt-3">
+  <div class="ibox-header">
+    <div class="mvi-ibox-title">
+      <h3><i class="fa fa-film"></i> Movies</h3>
+    </div>
+
+    <div class="mvi-ibox-buttons">
+      <%= link_to "Add New", new_admin_movie_path, class: "btn btn-new" %>
+    </div>
+  </div>
+
+  <div class="ibox-body">
+    <div class="ibox-filters">
+      <div class="filters-inner mb20">
+        <%= form_with url: edit_admin_actor_path(actor),
+                      method: :get, local: true,
+                      html: { class: "row g-2 align-items-end" } do %>
+          <div class="col-md-6">
+            <label class="form-label small mb-1">Search for:</label>
+            <%= text_field_tag :movies_q, params[:movies_q],
+                  class: "form-control",
+                  placeholder: "Search on Title/Description partial match" %>
+          </div>
+          <div class="col-md-2">
+            <%= hidden_field_tag :per_page, (params[:per_page].presence || 25) %>
+            <%= submit_tag "Go", class: "btn btn-primary w-100" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="ibox-content pb20">
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Movie Title</th>
+              <th style="width: 180px;">Released</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% movies.each do |m| %>
+              <tr>
+                <td><%= m.title %></td>
+                <td>
+                  <%= (m.try(:released_on) || m.try(:release_date) || m.try(:released_at))
+                        &.to_date&.strftime("%-d %b %Y") || "—" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <div>
+            <% if movies.respond_to?(:total_pages) %>
+              <%= page_entries_info(movies) %>
+            <% else %>
+              <span class="text-muted"><%= pluralize(movies.size, "movie") %></span>
+            <% end %>
+          </div>
+          <% if movies.respond_to?(:total_pages) %>
+            <%= paginate(movies, param_name: :movies_page) %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

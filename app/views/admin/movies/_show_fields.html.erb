@@ -1,0 +1,37 @@
+<!-- fieldset code here -->
+<div class="row mb20">
+  <!-- fields go here -->
+  <% if can_access_attribute?(:title) %>
+    <div class="col-lg-3">
+      <div class="form-group">
+            <div class="control-wrapper">
+            <div class="form-row d-flex">
+                <div class="input mr-3" style="flex: 1;">
+                <strong>Title:</strong>
+                <div class="form-control read-only text-left">
+                    <%= movie.title %>
+                </div>
+                </div>
+
+                <div class="input" style="flex: 0 0 200px;">
+                <strong>Content Rating:</strong>
+                <div class="form-control read-only text-left">
+                    <%= movie.content_rating %>
+                </div>
+                </div>
+            </div>
+
+            <div class="input mt-3">
+                <strong>Description:</strong>
+                <div class="form-control read-only">
+                <%= movie.description %>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<!-- action list start -->
+<!-- action list end -->

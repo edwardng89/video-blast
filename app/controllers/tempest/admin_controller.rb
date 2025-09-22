@@ -7,7 +7,6 @@ class Tempest::AdminController < ApplicationController
 
   skip_authorization_check only: %i[cleanup_dropzone_upload destroy_uploads action_modal]
 
-  before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :create_settings
 
@@ -294,7 +293,7 @@ class Tempest::AdminController < ApplicationController
 
   def crumb_for_edit
     object = send(controller_name.singularize)
-    add_breadcrumb "Edit #{object.name}"
+    add_breadcrumb Edit #{object.to_s}"
   end
 
   def crumb_for_show

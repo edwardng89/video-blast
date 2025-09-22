@@ -21,7 +21,7 @@
             <% end %>
           <% end %>
         <% end %>
-        <%#= link_to 'Show View', '#',
+        <%= link_to 'Show View', '#',
                     class: 'btn btn-view single-show-edit',
                     data: {'form-url': polymorphic_path([:admin, @user])} %>
       </div>
@@ -31,8 +31,6 @@
     </div>
   </div>
 <% end %>
-<!-- action buttons start -->
-<!-- child lists start -->
-<% if @user.persisted? %>
-  <%= render partial: 'nested_list' %>
-<% end %>
+
+
+
