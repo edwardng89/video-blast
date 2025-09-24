@@ -468,4 +468,25 @@ module ApplicationHelper
     flag ? "active" : ""
   end
 
+  def render_stars(rating)
+    rating = rating.to_f
+    full = rating.floor
+    half = (rating - full) >= 0.5
+    empty = 5 - full - (half ? 1 : 0)
+
+    stars = "★" * full
+    stars << "☆" if half # swap for a half-star icon if you have one
+    stars << "☆" * empty
+
+    content_tag(:span, "#{stars} #{format('%.1f', rating)}".html_safe, class: "text-muted")
+  end
+
+  def currency_from_cents(cents, unit: "$")
+    number_to_currency((cents.to_i) / 100.0, unit: unit)
+  end
+  def cart_count
+    (session[:cart] || {}).values.map(&:to_i).sum
+  end
+  def money_cents(cents) = number_to_currency(cents.to_i / 100.0)
+
 end

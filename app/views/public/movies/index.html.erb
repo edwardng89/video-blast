@@ -1,0 +1,50 @@
+<div class="container my-4">
+  <h1 class="mb-3">VideoBlast</h1>
+
+  <%= form_with url: videos_path, method: :get,
+                data: { controller: "debounce", action: "input->debounce#submit change->debounce#submit", turbo_frame: "movies_list" },
+                class: "row g-2 mb-3" do %>
+
+    <div class="col-12 col-lg-4">
+      <div class="input-group">
+        <span class="input-group-text">🔎</span>
+        <input type="search" name="q" value="<%= h @q %>" class="form-control" placeholder="search">
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <select name="genre_id" class="form-select">
+        <option value="">Genre</option>
+        <% Genre.order(:name).each do |g| %>
+          <option value="<%= g.id %>" <%= "selected" if g.id.to_s == @genre_id.to_s %>><%= g.name %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <select name="content_rating" class="form-select">
+        <option value="">Content Rating</option>
+        <% Movie.distinct.order(:content_rating).pluck(:content_rating).compact.each do |cr| %>
+          <option value="<%= cr %>" <%= "selected" if cr == @content_rating %>><%= cr %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <select name="rating_min" class="form-select">
+        <option value="">Avg Rating</option>
+        <% 1.upto(5) do |n| %>
+          <option value="<%= n %>" <%= "selected" if params[:rating_min].to_i == n %>><%= "#{n}+" %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <button class="btn btn-primary w-100">Filter</button>
+    </div>
+  <% end %>
+
+  <%= turbo_frame_tag "movies_list" do %>
+    <%= render "public/movies/list", movies: @movies %>
+  <% end %>
+</div>

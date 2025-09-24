@@ -46,7 +46,26 @@ class Tempest::User < ApplicationRecord
   # If the gender select has a "Please Select" placeholder, reject it explicitly
   validate :reject_gender_placeholder
 
+  before_validation :set_default_role
+
+
+  def admin?
+    self.admin || role.in?(%w[admin super_admin])
+  end
+
+  def user?
+    !admin?
+  end
+
+  def name
+    [first_name, last_name].reject(&:blank?).join(" ").presence || email
+  end
+
   private
+
+  def set_default_role
+    self.role ||= "user"   # <- default for public signups
+  end
 
   def normalize_fields
     self.first_name = first_name.to_s.strip.squish.titleize

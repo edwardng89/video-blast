@@ -1,7 +1,7 @@
 <tr id="movie_<%= movie.id %>">
   <!-- Cover-->
   <td class="align-middle" style="width:64px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-    <%= image_tag movie.display_image if movie.cover.attached? %>
+    <%= image_tag movie.cover_or_placeholder if movie.cover.attached? %>
   </td>
 
   <!-- Title -->

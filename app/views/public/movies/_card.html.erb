@@ -1,0 +1,29 @@
+<div class="col">
+  <div class="card h-100 shadow-sm">
+    <% if movie.cover.attached? %>
+      <%= image_tag movie.cover, class: "card-img-top", alt: movie.title %>
+    <% else %>
+      <img src="<%= image_path('placeholder.png') %>" class="card-img-top" alt="No cover">
+    <% end %>
+
+    <div class="card-body d-flex flex-column">
+      <h6 class="mb-1">
+        <strong><%= movie.title %></strong>
+        <% if movie.content_rating.present? %>
+          <span class="text-muted">[<%= movie.content_rating %>]</span>
+        <% end %>
+      </h6>
+
+      <div class="mb-1 small">
+        <%= render_stars(movie.average_rating) %>   
+      </div>
+
+
+      <div class="text-muted small mb-2"><%= movie.genres.map(&:name).join(", ") %></div>
+
+      <p class="card-text flex-grow-1"><%= truncate(movie.description.to_s, length: 70) %></p>
+
+      <%= link_to "View", public_movie_path(movie), class: "btn btn-secondary btn-sm mt-auto" %>
+    </div>
+  </div>
+</div>

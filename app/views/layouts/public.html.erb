@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>VideoBlast</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+
+    <%# Optional favicon using the MindVision mark - change to your asset if you prefer %>
+    <%= favicon_link_tag "https://www.mindvision.com.au/wp-content/uploads/2016/10/mv_icon_clear.png" %>
+
+    <style>
+      :root {
+        --brand: #0d6efd;
+        --ink: #1f2a37;
+      }
+
+      /* Topbar */
+      .site-navbar {
+        background: #0b2c40;
+        box-shadow: 0 6px 18px rgba(0,0,0,.18);
+      }
+      .brand {
+        display: flex; align-items: center; gap: .625rem;
+        font-weight: 700; letter-spacing: .25px;
+      }
+      .brand img {
+        width: 28px; height: 28px; object-fit: contain;
+        filter: drop-shadow(0 0 0 rgba(0,0,0,0)); /* crisp logo */
+      }
+
+      /* Nice primary action */
+      .btn-cta { border-radius: 999px; padding: .5rem 1.1rem; }
+
+      /* Flash */
+      .flash { border-radius: 10px; }
+
+      /* Footer */
+      footer {
+        background: #0b2c40;
+        color: #e5eef5;
+      }
+
+      /* Keep button_to inline inside navbar */
+      .navbar .button_to, .navbar .button_to form { display: inline; margin: 0; }
+      .navbar input.btn { -webkit-appearance: none; appearance: none; }
+    </style>
+  </head>
+
+  <body class="bg-light text-dark">
+    <!-- NAV -->
+    <nav class="navbar navbar-expand-lg navbar-dark site-navbar sticky-top">
+      <div class="container">
+        <%= link_to root_path, class: "navbar-brand brand" do %>
+          <%= image_tag "https://www.mindvision.com.au/wp-content/uploads/2016/10/mv_icon_clear.png",
+                        alt: "VideoBlast", width: 28, height: 28 %>
+          <span>VideoBlast</span>
+        <% end %>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNav"
+                aria-controls="publicNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="publicNav">
+          <ul class="navbar-nav ms-auto align-items-center" style="gap:.5rem;">
+            <li class="nav-item">
+              <%= link_to "Browse Videos", public_movies_path, class: "btn btn-primary btn-cta" %>
+            </li>
+
+            <% if user_signed_in? %>
+              <li class="nav-item">
+                <%= button_to "Account",
+                              edit_user_registration_path,
+                              method: :get,
+                              class: "btn btn-outline-light btn-sm",
+                              form: { class: "d-inline" } %>
+              </li>
+
+              <%= link_to "Cart (#{(session[:cart] || {}).values.sum})", public_cart_path, class: "nav-link" %>
+
+              <li class="nav-item">
+                <%= button_to "Sign Out",
+                              destroy_user_session_path,
+                              method: :delete,
+                              class: "btn btn-outline-light btn-sm",
+                              form: { class: "d-inline", data: { turbo: "true" } } %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= button_to "Sign In",
+                              new_user_session_path,
+                              method: :get,
+                              class: "btn btn-outline-light btn-sm",
+                              form: { class: "d-inline" } %>
+              </li>
+              <li class="nav-item">
+                <%= button_to "Create Account",
+                              new_user_registration_path,
+                              method: :get,
+                              class: "btn btn-success btn-sm",
+                              form: { class: "d-inline" } %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- PAGE -->
+    <main class="container py-4">
+      <% flash.each do |k, v| %>
+        <div class="flash alert <%= k.to_s == "notice" ? "alert-info" : "alert-danger" %> shadow-sm">
+          <%= v %>
+        </div>
+      <% end %>
+      <%= yield %>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-4">
+      <div class="container d-flex justify-content-between align-items-center small">
+        <span>© <%= Time.current.year %> VideoBlast</span>
+        <span>
+          <%= link_to "Browse Videos", public_movies_path, class: "link-light text-decoration-none" %>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>

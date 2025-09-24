@@ -68,8 +68,12 @@
   </li>
 
   <li class='header-logo-container'>
-    <div class='header-logo'>
-      <%= link_to '', admin_root_path, class: 'menu-logo' %>
+    <div class="header-logo d-flex align-items-center justify-content-center" style="height:60px;">
+      <%= link_to admin_root_path, class: 'menu-logo d-inline-block' do %>
+        <%= image_tag "https://www.mindvision.com.au/wp-content/uploads/2016/10/mv_icon_clear.png",
+                      alt: "MindVision Logo",
+                      style: "height:40px; width:auto; display:block; margin-top:-5px;" %>
+      <% end %>
     </div>
   </li>
 

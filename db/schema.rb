@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_16_051302) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_24_053103) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -207,6 +207,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_16_051302) do
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "avg_user_ratings"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -261,6 +262,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_16_051302) do
     t.bigint "copy_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "quantity"
     t.index ["copy_id"], name: "ix_rental_items_on_copy_id"
     t.index ["rental_id", "copy_id"], name: "ix_rental_items_on_rental_id__copy_id", unique: true
     t.index ["rental_id"], name: "ix_rental_items_on_rental_id"

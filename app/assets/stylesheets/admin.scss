@@ -90,3 +90,14 @@
   color: #fff;
   border-radius: 3px;
 }
+
+button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+
+button, input[type="submit"] {
+  outline: none !important;
+  box-shadow: none !important;
+}

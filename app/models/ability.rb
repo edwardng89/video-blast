@@ -3,33 +3,38 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    user ||= User.new(role: "user")
+    # guest user (not logged in)
+    user ||= User.new
 
-    if user.super_admin?
+    # Normalize role checks (works whether you use role string or boolean admin flag)
+    role = (user.respond_to?(:role) && user.role).to_s
+
+    if role == "super_admin" || (user.respond_to?(:super_admin?) && user.super_admin?)
       can :manage, :all
 
-    elsif user.admin?
-      can :manage, [Video, Actor, Movie]
-      can :read, :all
+    elsif role == "admin" || (user.respond_to?(:admin?) && user.admin?)
+      # Admins can manage core catalog + rentals
+      can :manage, [Movie, Actor, Copy, Genre, Rental, Casting]
+
+      # But do NOT manage users (adjust if you want admins to manage users)
       cannot :manage, User
-      cannot :manage, Order
+
+      # Read everything else
+      can :read, :all
 
     else
-      # regular "user"
-      can :read, Movie           # they may see Movie
-      can :access, :lookups      # they may see the Lookups menu
-
-      # no Actors / Genres / Rentals menu visibility:
-      can :read, Actor
+      # Regular user / guest
+      can :read, Movie
       can :read, Genre
-      cannot :read, Rental
+      can :read, Actor
 
-      # example order/customer limits (optional)
-      # can [:read, :create], Order
-      # cannot [:update, :destroy], Order
+      # Allow users to read their own rentals if you expose that (optional):
+      # can :read, Rental, user_id: user.id
 
-      # never manage users
+      # Block access to admin-only resources
       cannot :manage, User
+      cannot :manage, Rental
+      cannot :manage, [Copy, Casting]
     end
   end
 end

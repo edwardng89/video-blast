@@ -1,0 +1,13 @@
+<% if movies.any? %>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+    <% movies.each do |movie| %>
+      <%= render "public/movies/card", movie: movie %>
+    <% end %>
+  </div>
+
+  <div class="mt-3">
+    <%= paginate movies, params: { q: @q, genre_id: @genre_id, content_rating: @content_rating, rating_min: @rating_min }, theme: "bootstrap-5" rescue paginate(movies) %>
+  </div>
+<% else %>
+  <div class="alert alert-info">No videos matched your filters.</div>
+<% end %>

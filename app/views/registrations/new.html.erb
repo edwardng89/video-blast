@@ -1,0 +1,95 @@
+<!-- app/views/registrations/new.html.erb -->
+<div class="container my-5">
+  <div class="row">
+    <!-- Returning User (Login) -->
+    <div class="col-12 col-lg-6 mb-5 mb-lg-0">
+      <h3 class="mb-4">Returning User</h3>
+
+      <%= form_with url: user_session_path, scope: :user, local: true do |f| %>
+        <div class="mb-3">
+          <%= f.label :email, class: "form-label" %>
+          <%= f.email_field :email, autocomplete: "email", class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :password, class: "form-label" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
+        </div>
+        <%= f.submit "Log In", class: "btn btn-primary px-4" %>
+      <% end %>
+
+      <div class="mt-3">
+        <%= link_to "Forgot your password?", new_user_password_path, class: "small" %>
+      </div>
+    </div>
+
+    <!-- New Customers (Sign Up) -->
+    <div class="col-12 col-lg-6">
+      <h3 class="mb-4">New User</h3>
+
+      <% if @user&.errors&.any? %>
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            <% @user.errors.full_messages.each do |m| %><li><%= m %></li><% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form_with model: (@user || User.new), url: user_registration_path, local: true do |f| %>
+        <!-- If your model requires role, include this hidden default -->
+        <%= f.hidden_field :role, value: "user" %>
+
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <%= f.label :first_name, class: "form-label" %>
+            <%= f.text_field :first_name, class: "form-control", placeholder: "First Name" %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= f.label :last_name, class: "form-label" %>
+            <%= f.text_field :last_name, class: "form-control", placeholder: "Last Name" %>
+          </div>
+
+          <div class="col-12">
+            <%= f.label :address_line_1, class: "form-label" %>
+            <%= f.text_field :address_line_1, class: "form-control", placeholder: "Address Line 1" %>
+          </div>
+          <div class="col-12">
+            <%= f.label :address_line_2, class: "form-label" %>
+            <%= f.text_field :address_line_2, class: "form-control", placeholder: "Address Line 2" %>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <%= f.label :suburb, class: "form-label" %>
+            <%= f.text_field :suburb, class: "form-control", placeholder: "Suburb" %>
+          </div>
+          <div class="col-6 col-md-3">
+            <%= f.label :state, class: "form-label" %>
+            <%= f.text_field :state, class: "form-control", placeholder: "State" %>
+          </div>
+          <div class="col-6 col-md-3">
+            <%= f.label :postcode, class: "form-label" %>
+            <%= f.text_field :postcode, class: "form-control", placeholder: "Postcode" %>
+          </div>
+
+          <div class="col-12">
+            <%= f.label :email, class: "form-label" %>
+            <%= f.email_field :email, autocomplete: "email", class: "form-control", placeholder: "email" %>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <%= f.label :password, class: "form-label" %>
+            <%= f.password_field :password, autocomplete: "new-password", class: "form-control", placeholder: "password" %>
+            <small class="text-muted">Minimum <%= Devise.password_length.min %> characters</small>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= f.label :password_confirmation, class: "form-label" %>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", placeholder: "confirm password" %>
+          </div>
+
+          <div class="col-12">
+            <%= f.submit "Sign Up!", class: "btn btn-success px-4" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

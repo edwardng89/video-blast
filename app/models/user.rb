@@ -4,7 +4,7 @@ class User < Tempest::User
   has_many :rentals
   # Devise setup
   devise :invitable, :trackable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable
+         :recoverable, :rememberable, :validatable
 
   # CSV export
   def self.to_csv

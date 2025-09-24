@@ -1,1 +1,45 @@
-"This is for dashboard and information page"
+<div class="container my-4">
+  <h1 class="mb-4">Admin Dashboard</h1>
+
+  <div class="row g-4">
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Users</h5>
+          <p class="display-6"><%= User.count %></p>
+          <%= link_to "Manage Users", admin_users_path, class: "btn btn-sm btn-primary" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Movies</h5>
+          <p class="display-6"><%= Movie.count %></p>
+          <%= link_to "Manage Movies", admin_movies_path, class: "btn btn-sm btn-primary" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Rentals</h5>
+          <p class="display-6"><%= Rental.count %></p>
+          <%= link_to "View Rentals", admin_due_rentals_path, class: "btn btn-sm btn-primary" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Overdue</h5>
+          <p class="display-6 text-danger"><%= Rental.where("due_date < ? AND returned_at IS NULL", Date.today).count %></p>
+          <%= link_to "Overdue Rentals", admin_due_rentals_path, class: "btn btn-sm btn-danger" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

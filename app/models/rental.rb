@@ -89,4 +89,12 @@ class Rental < ApplicationRecord
     SendReceiptJob.perform_later(self.id)
   end
 
+  def set_defaults
+    self.order_number  ||= SecureRandom.hex(6).upcase
+    self.order_status  ||= "ongoing"
+    self.rental_date   ||= Date.current
+    # Persist a due date so admin screens see it:
+    self.due_date      ||= rental_date + 7.days
+  end
+
 end

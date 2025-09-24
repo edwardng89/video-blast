@@ -17,6 +17,13 @@ user.password_confirmation = 'password'
 user.save!(validate: false)
 
 
+Movie.find_each do |m|
+  next if m.avg_user_ratings.present?
+  m.update!(avg_user_ratings: rand(1.0..5.0).round(1))
+end
+
+
+
 # If something fails prefer to start again based on the above code to avoid re-runs
 ActiveRecord::Base.transaction do
   # -- Model seeds start --
