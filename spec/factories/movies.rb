@@ -1,11 +1,9 @@
 FactoryBot.define do
   factory :movie do
-    active { false }
-
-    content_rating { 'g' }
-    cover { 'MyString' }
-    description { 'MyText' }
-    released_on { '2024-02-29' }
-    title { 'MyString' }
+    title          { "Example Movie" }
+    description    { "A really great movie description." }
+    content_rating { "PG" }
+    released_on    { Date.today }
+    active         { true }
   end
 end

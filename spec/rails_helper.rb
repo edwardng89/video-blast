@@ -30,6 +30,7 @@ rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
 RSpec.configure do |config| # Wrap tests with Bullet checks for N+1
+  
   if Bullet.enable?
     config.before(:each) do
       Bullet.start_request
@@ -43,6 +44,7 @@ RSpec.configure do |config| # Wrap tests with Bullet checks for N+1
 
   config.include Devise::TestHelpers, type: :controller
   config.include Devise::TestHelpers, type: :request
+  config.include ActiveJob::TestHelper
   config.include FactoryBot::Syntax::Methods
 
   config.before(:suite) do
@@ -88,4 +90,12 @@ RSpec.configure do |config| # Wrap tests with Bullet checks for N+1
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+      with.test_framework :rspec
+      with.library :rails
+    end
+  end
+
+
 end

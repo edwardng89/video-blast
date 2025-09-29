@@ -9,52 +9,17 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 
-    <%# Optional favicon using the MindVision mark - change to your asset if you prefer %>
     <%= favicon_link_tag "https://www.mindvision.com.au/wp-content/uploads/2016/10/mv_icon_clear.png" %>
 
-    <style>
-      :root {
-        --brand: #0d6efd;
-        --ink: #1f2a37;
-      }
-
-      /* Topbar */
-      .site-navbar {
-        background: #0b2c40;
-        box-shadow: 0 6px 18px rgba(0,0,0,.18);
-      }
-      .brand {
-        display: flex; align-items: center; gap: .625rem;
-        font-weight: 700; letter-spacing: .25px;
-      }
-      .brand img {
-        width: 28px; height: 28px; object-fit: contain;
-        filter: drop-shadow(0 0 0 rgba(0,0,0,0)); /* crisp logo */
-      }
-
-      /* Nice primary action */
-      .btn-cta { border-radius: 999px; padding: .5rem 1.1rem; }
-
-      /* Flash */
-      .flash { border-radius: 10px; }
-
-      /* Footer */
-      footer {
-        background: #0b2c40;
-        color: #e5eef5;
-      }
-
-      /* Keep button_to inline inside navbar */
-      .navbar .button_to, .navbar .button_to form { display: inline; margin: 0; }
-      .navbar input.btn { -webkit-appearance: none; appearance: none; }
-    </style>
+    <!-- Bootstrap Icons for cart/bell -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   </head>
 
   <body class="bg-light text-dark">
     <!-- NAV -->
     <nav class="navbar navbar-expand-lg navbar-dark site-navbar sticky-top">
       <div class="container">
-        <%= link_to root_path, class: "navbar-brand brand" do %>
+        <%= link_to root_path, class: "brand navbar-brand" do %>
           <%= image_tag "https://www.mindvision.com.au/wp-content/uploads/2016/10/mv_icon_clear.png",
                         alt: "VideoBlast", width: 28, height: 28 %>
           <span>VideoBlast</span>
@@ -66,43 +31,102 @@
         </button>
 
         <div class="collapse navbar-collapse" id="publicNav">
-          <ul class="navbar-nav ms-auto align-items-center" style="gap:.5rem;">
-            <li class="nav-item">
+          <ul class="navbar-nav ms-auto align-items-center" style="gap:.6rem;">
+            <!-- Primary action -->
+            <li class="nav-item me-2">
               <%= link_to "Browse Videos", public_movies_path, class: "btn btn-primary btn-cta" %>
             </li>
 
             <% if user_signed_in? %>
+              <!-- Cart link with count -->
               <li class="nav-item">
-                <%= button_to "Account",
-                              edit_user_registration_path,
-                              method: :get,
-                              class: "btn btn-outline-light btn-sm",
-                              form: { class: "d-inline" } %>
+                <% cart_count = (session[:cart] || {}).values.map(&:to_i).sum %>
+                <%= link_to public_cart_path, class: "nav-icon" do %>
+                  <i class="bi bi-cart"></i>
+                  <span>Cart</span>
+                  <span class="badge-count"><%= cart_count %></span>
+                <% end %>
               </li>
 
-              <%= link_to "Cart (#{(session[:cart] || {}).values.sum})", public_cart_path, class: "nav-link" %>
-
+              <!-- Orders -->
               <li class="nav-item">
-                <%= button_to "Sign Out",
-                              destroy_user_session_path,
-                              method: :delete,
-                              class: "btn btn-outline-light btn-sm",
+                <%= link_to public_rentals_path, class: "nav-icon" do %>
+                  <i class="bi bi-journal-text"></i>
+                  <span>My Orders</span>
+                <% end %>
+              </li>
+
+              <!-- Notifications DROPDOWN with badge -->
+              <li class="nav-item dropdown">
+                <% notif_count = current_user.notifications.where(fulfilled: false, notified_at: nil).count %>
+                <a class="nav-icon dropdown-toggle"
+                   href="#"
+                   id="notifDrop"
+                   role="button"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                  <i class="bi bi-bell"></i>
+                  <span>Notifications</span>
+                  <% if notif_count.positive? %>
+                    <span class="badge-count"><%= notif_count %></span>
+                  <% end %>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notifDrop" style="min-width: 320px;">
+                  <% recent = current_user.notifications
+                                         .includes(:movie)
+                                         .order(created_at: :desc)
+                                         .limit(5) %>
+                  <% if recent.any? %>
+                    <% recent.each do |notif| %>
+                      <li>
+                        <% if notif.fulfilled? %>
+                          <span class="dropdown-item text-success">
+                            ✅ You successfully rented <%= notif.movie.title %>
+                          </span>
+                        <% elsif notif.notified_at.present? %>
+                          <span class="dropdown-item text-warning">
+                            🔔 <%= notif.movie.title %> is back in stock
+                          </span>
+                        <% else %>
+                          <span class="dropdown-item text-muted">
+                            ⏳ Waiting for stock of <%= notif.movie.title %>
+                          </span>
+                        <% end %>
+                      </li>
+                    <% end %>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <%= link_to "View all notifications",
+                                  public_notifications_path,
+                                  class: "dropdown-item" %>
+                    </li>
+                  <% else %>
+                    <li><span class="dropdown-item text-muted">No notifications</span></li>
+                  <% end %>
+                </ul>
+              </li>
+              <!-- end notifications -->
+
+              <!-- Account + Sign out -->
+              <li class="nav-item">
+                <%= button_to "Account", edit_user_registration_path, method: :get, class: "btn btn-ghost btn-sm",
+                              form: { class: "d-inline" } %>
+              </li>
+              <li class="nav-item">
+                <%= button_to "Sign Out", destroy_user_session_path, method: :delete,
+                              class: "btn btn-ghost btn-sm",
                               form: { class: "d-inline", data: { turbo: "true" } } %>
               </li>
+
             <% else %>
               <li class="nav-item">
-                <%= button_to "Sign In",
-                              new_user_session_path,
-                              method: :get,
-                              class: "btn btn-outline-light btn-sm",
-                              form: { class: "d-inline" } %>
+                <%= button_to "Sign In", new_user_session_path, method: :get,
+                              class: "btn btn-ghost btn-sm", form: { class: "d-inline" } %>
               </li>
               <li class="nav-item">
-                <%= button_to "Create Account",
-                              new_user_registration_path,
-                              method: :get,
-                              class: "btn btn-success btn-sm",
-                              form: { class: "d-inline" } %>
+                <%= button_to "Create Account", new_user_registration_path, method: :get,
+                              class: "btn btn-success btn-sm", form: { class: "d-inline" } %>
               </li>
             <% end %>
           </ul>
@@ -124,10 +148,11 @@
     <footer class="py-4">
       <div class="container d-flex justify-content-between align-items-center small">
         <span>© <%= Time.current.year %> VideoBlast</span>
-        <span>
-          <%= link_to "Browse Videos", public_movies_path, class: "link-light text-decoration-none" %>
-        </span>
+        <span><%= link_to "Browse Videos", public_movies_path, class: "link-light text-decoration-none" %></span>
       </div>
     </footer>
+
+    <!-- Bootstrap JS (dropdown/collapse) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
   </body>
 </html>

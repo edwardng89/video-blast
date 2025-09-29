@@ -1,0 +1,13 @@
+<% if current_user.notifications.exists?(movie: movie, format: format, fulfilled: false) %>
+  <%= button_to "Remove from Waitlist",
+                public_notification_path(movie_id: movie.id, format: format),
+                method: :delete,
+                data: { turbo_stream: true },
+                class: "btn btn-outline-danger btn-sm" %>
+<% else %>
+  <%= button_to "Notify Me",
+                public_notifications_path(movie_id: movie.id, format: format),
+                method: :post,
+                data: { turbo_stream: true },
+                class: "btn btn-outline-primary btn-sm" %>
+<% end %>

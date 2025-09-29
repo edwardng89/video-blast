@@ -1,0 +1,47 @@
+<!-- app/views/public/rentals/index.html.erb -->
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0">My Orders</h1>
+
+    <div class="btn-group">
+      <%= link_to "All", public_rentals_path, class: "btn btn-sm #{params[:status].blank? ? 'btn-primary' : 'btn-outline-primary'}" %>
+      <%= link_to "Outstanding", public_rentals_path(status: :outstanding), class: "btn btn-sm #{params[:status] == 'outstanding' ? 'btn-primary' : 'btn-outline-primary'}" %>
+      <%= link_to "Returned", public_rentals_path(status: :returned), class: "btn btn-sm #{params[:status] == 'returned' ? 'btn-primary' : 'btn-outline-primary'}" %>
+    </div>
+  </div>
+
+  <% if @rentals.blank? %>
+    <p class="text-muted">No orders to show.</p>
+    <%= link_to "Browse movies", public_movies_path, class: "btn btn-secondary" %>
+  <% else %>
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Date</th>
+          <th>Due</th>
+          <th>Items</th>
+          <th class="text-end">Total</th>
+          <th class="text-center">Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @rentals.each do |r| %>
+          <% titles = r.rental_items.map { |ri| "#{ri.copy.movie.title} (#{ri.copy.copy_format})" } %>
+          <tr>
+            <td class="fw-semibold"><%= r.order_number %></td>
+            <td><%= l(r.rental_date || r.created_at.to_date, format: :long) %></td>
+            <td><%= r.due_date ? l(r.due_date, format: :long) : "-" %></td>
+            <td class="text-truncate" style="max-width: 520px;"><%= titles.join(", ") %></td>
+            <td class="text-end"><%= money_cents(r.total_cents) %></td>
+            <td class="text-center"><%= status_badge(r.status_label) %></td>
+            <td class="text-end">
+              <%= link_to "View", public_rental_path(r), class: "btn btn-sm btn-outline-primary" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

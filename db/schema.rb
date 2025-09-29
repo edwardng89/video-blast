@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_24_053103) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_29_032316) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -201,7 +201,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_24_053103) do
     t.datetime "deleted_at"
     t.boolean "active"
     t.string "content_rating"
-    t.string "cover"
     t.text "description"
     t.date "released_on"
     t.string "title"

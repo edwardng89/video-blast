@@ -1,0 +1,3 @@
+<%= turbo_stream.replace dom_id(@movie, "notify_#{@format}") do %>
+  <%= render "public/notifications/button", movie: @movie, format: @format %>
+<% end %>

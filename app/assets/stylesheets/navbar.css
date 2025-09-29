@@ -1,0 +1,51 @@
+:root {
+  --brand: #0d6efd;   /* primary */
+  --ink:   #e7f0f8;   /* light text */
+  --nav:   #0b2c40;   /* navbar bg */
+}
+
+/* Navbar shell */
+.site-navbar {
+  background: var(--nav);
+  box-shadow: 0 6px 18px rgba(0,0,0,.18);
+}
+
+/* Brand lockup */
+.brand {
+  display: flex; align-items: center; gap: .6rem;
+  font-weight: 700; letter-spacing: .25px; color: white; text-decoration: none;
+}
+.brand img { width: 28px; height: 28px; object-fit: contain; }
+
+/* Primary pill CTA */
+.btn-cta { border-radius: 999px; padding: .5rem 1.1rem; }
+
+/* Ghost button look for dark nav */
+.btn-ghost {
+  color: #e8f0f7; border: 1px solid rgba(255,255,255,.35);
+  background: transparent;
+}
+.btn-ghost:hover { color: white; border-color: white; }
+
+/* Icon links (cart / bell) */
+.nav-icon {
+  color: rgba(255,255,255,.8);
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .35rem .6rem; border-radius: .5rem; text-decoration: none;
+}
+.nav-icon:hover { color: white; background: rgba(255,255,255,.08); }
+
+/* Numeric badges on icons */
+.badge-count {
+  position: relative; top: -.1rem; margin-left: .2rem;
+  background: #e94e4e; color: white; border-radius: 999px;
+  padding: .1rem .4rem; font-size: .72rem;
+}
+
+/* Keep button_to inline inside navbar */
+.navbar .button_to, .navbar .button_to form { display: inline; margin: 0; }
+.navbar input.btn { -webkit-appearance: none; appearance: none; }
+
+/* Flash bubble */
+.flash { border-radius: 10px; }
+footer { background: var(--nav); color: #e5eef5; }

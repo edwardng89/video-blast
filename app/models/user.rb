@@ -2,10 +2,12 @@ class User < Tempest::User
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   has_many :rentals
+  has_many :notifications, dependent: :destroy
   # Devise setup
   devise :invitable, :trackable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+         
   # CSV export
   def self.to_csv
     attributes = %w[id first_name last_name email role active created_at]

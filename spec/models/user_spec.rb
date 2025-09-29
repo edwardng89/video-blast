@@ -12,11 +12,18 @@ RSpec.describe Tempest::User, type: :model do
       )
     end
 
-    it "responds to role helpers" do
-      u = build(:tempest_user, role: "admin")
-      expect(u.admin?).to be true
-      u.role = "user"
-      expect(u.user?).to be true
+    it "responds correctly to role helpers for all roles" do
+      admin = build(:tempest_user, role: "admin")
+      super_admin = build(:tempest_user, role: "super_admin")
+      user = build(:tempest_user, role: "user")
+
+      expect(admin.admin?).to be true
+      expect(super_admin.admin?).to be true
+      expect(user.admin?).to be false
+
+      expect(user.user?).to be true
+      expect(admin.user?).to be false
+      expect(super_admin.user?).to be false
     end
   end
 
@@ -35,10 +42,11 @@ RSpec.describe Tempest::User, type: :model do
         expect(u.errors[:last_name]).to be_present
       end
 
-      it "requires role" do
+      it "defaults role to 'user' if none is provided" do
         u = build(:tempest_user, role: nil)
-        expect(u).not_to be_valid
-        expect(u.errors[:role]).to be_present
+        u.valid? # triggers before_validation
+        expect(u.role).to eq("user")
+        expect(u).to be_valid
       end
     end
 
@@ -139,32 +147,26 @@ RSpec.describe Tempest::User, type: :model do
       user.send(:normalize_fields)
 
       aggregate_failures "normalized field properties" do
-        # first_name
-        expect(user.first_name).to eq(user.first_name.strip), "first_name should be trimmed"
-        expect(user.first_name).to eq(user.first_name.squish), "first_name should be squished"
-        expect(user.first_name).to eq(user.first_name.titleize), "first_name should be titleized"
+        expect(user.first_name).to eq(user.first_name.strip)
+        expect(user.first_name).to eq(user.first_name.squish)
+        expect(user.first_name).to eq(user.first_name.titleize)
 
-        # last_name
-        expect(user.last_name).to eq(user.last_name.strip), "last_name should be trimmed"
-        expect(user.last_name).to eq(user.last_name.squish), "last_name should be squished"
-        expect(user.last_name).to eq(user.last_name.titleize), "last_name should be titleized"
+        expect(user.last_name).to eq(user.last_name.strip)
+        expect(user.last_name).to eq(user.last_name.squish)
+        expect(user.last_name).to eq(user.last_name.titleize)
 
-        # email
-        expect(user.email).to eq(user.email.strip), "email should be trimmed"
-        expect(user.email).to eq(user.email.downcase), "email should be downcased"
+        expect(user.email).to eq(user.email.strip)
+        expect(user.email).to eq(user.email.downcase)
 
-        # suburb
-        expect(user.suburb).to eq(user.suburb.strip), "suburb should be trimmed"
-        expect(user.suburb).to eq(user.suburb.squish), "suburb should be squished"
-        expect(user.suburb).to eq(user.suburb.titleize), "suburb should be titleized"
+        expect(user.suburb).to eq(user.suburb.strip)
+        expect(user.suburb).to eq(user.suburb.squish)
+        expect(user.suburb).to eq(user.suburb.titleize)
 
-        # state
         expect(user.state).to be_present
-        expect(user.state).to eq(user.state.strip), "state should be trimmed"
-        expect(user.state).to eq(user.state.upcase), "state should be upcased"
+        expect(user.state).to eq(user.state.strip)
+        expect(user.state).to eq(user.state.upcase)
 
-        # postcode (digits only)
-        expect(user.postcode).to match(/\A\d*\z/), "postcode should contain digits only"
+        expect(user.postcode).to match(/\A\d*\z/)
       end
     end
 
@@ -174,8 +176,31 @@ RSpec.describe Tempest::User, type: :model do
       expect(user.state).to be_nil
     end
   end
-   # ---------------- SORT ----------------
-    describe ".in_order" do
+
+  describe "set_default_role" do
+    it "defaults to 'user' if no role is provided" do
+      u = build(:tempest_user, role: nil)
+      u.valid? # triggers before_validation
+      expect(u.role).to eq("user")
+      expect(u).to be_valid
+    end
+  end
+
+  # ---------------- INSTANCE METHODS ----------------
+  describe "#name" do
+    it "returns full name when present" do
+      u = build(:tempest_user, first_name: "Jane", last_name: "Doe")
+      expect(u.name).to eq("Jane Doe")
+    end
+
+    it "falls back to email when names are blank" do
+      u = build(:tempest_user, first_name: "", last_name: "", email: "test@example.com")
+      expect(u.name).to eq("test@example.com")
+    end
+  end
+
+  # ---------------- SORT ----------------
+  describe ".in_order" do
     let!(:a) { create(:tempest_user, last_name: "Alpha", first_name: "Amy",  email: "a@example.com", created_at: 2.days.ago) }
     let!(:b) { create(:tempest_user, last_name: "Beta",  first_name: "Bob",  email: "b@example.com", created_at: 1.day.ago) }
 
@@ -208,8 +233,13 @@ RSpec.describe Tempest::User, type: :model do
     end
   end
 
-
-
+  describe ".sort_options_for_select" do
+    it "returns the expected options" do
+      options = described_class.sort_options_for_select
+      expect(options).to include(["Name (A → Z)", "name_asc"])
+      expect(options).to include(["Newest first", "created_at_desc"])
+    end
+  end
 
   # ---------------- SOFT DELETE ----------------
   describe "soft delete (acts_as_paranoid)" do
@@ -222,12 +252,10 @@ RSpec.describe Tempest::User, type: :model do
         expect(deleted.deleted_at).to be_present
 
         if deleted.respond_to?(:really_destroy!)
-          # ensure we can permanently delete when asked
           deleted.really_destroy!
           expect(described_class.with_deleted.where(id: user.id)).to be_none
         end
       else
-        # Fallback check if paranoia scopes aren’t available
         expect(described_class.where(id: user.id)).to be_none
         expect(user.deleted_at).to be_present
       end

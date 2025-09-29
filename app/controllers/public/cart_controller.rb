@@ -11,7 +11,7 @@ class Public::CartController < ApplicationController
       copy = by_id[copy_id.to_s]
       next unless copy
       q = qty.to_i
-      unit_cents = copy.rental_cost.to_i                      # already cents
+      unit_cents = copy.rental_cost.to_i                   
       {
         copy: copy,
         movie: copy.movie,

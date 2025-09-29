@@ -9,6 +9,9 @@ Rails.application.routes.draw do
 
   # Public catalog (read-only)
   namespace :public do
+    get 'notifications/index'
+    get 'notifications/create'
+    get 'notifications/destroy'
     resources :movies, only: [:index, :show]
 
     resource :cart, only: [:show], controller: "cart" do
@@ -17,7 +20,8 @@ Rails.application.routes.draw do
       delete :clear  # clear_public_cart_path
     end
 
-    resources :rentals, only: [:show, :create]
+    resources :rentals, only: [:index, :show, :create]
+    resources :notifications, only: [:index, :create, :destroy]
   end
 
   get "/videos", to: "public/movies#index", as: :videos

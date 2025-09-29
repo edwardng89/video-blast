@@ -1,0 +1,42 @@
+<h1 class="h5 mb-3">My Notifications</h1>
+
+<% if @notifications.blank? %>
+  <p class="text-muted">You have no notifications.</p>
+  <%= link_to "Browse videos", public_movies_path, class: "btn btn-secondary" %>
+<% else %>
+  <table class="table align-middle">
+    <thead>
+      <tr>
+        <th>Movie</th>
+        <th>Format</th>
+        <th>Requested</th>
+        <th>Status</th>
+        <th class="text-end"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @notifications.each do |n| %>
+        <tr>
+          <td><%= link_to n.movie.title, public_movie_path(n.movie) %></td>
+          <td><%= n.format %></td>
+          <td><%= l(n.created_at, format: :short) %></td>
+          <td>
+            <% if n.fulfilled? %>
+              <span class="badge bg-success">Fulfilled</span>
+            <% elsif n.notified_at.present? %>
+              <span class="badge bg-warning text-dark">Notified</span>
+            <% else %>
+              <span class="badge bg-secondary">Pending</span>
+            <% end %>
+          </td>
+          <td class="text-end">
+            <%= button_to "Dismiss",
+                          public_notification_path(n),
+                          method: :delete,
+                          class: "btn btn-sm btn-outline-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

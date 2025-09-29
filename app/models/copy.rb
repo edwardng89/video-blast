@@ -13,8 +13,12 @@ class Copy < ApplicationRecord
 
   # rentals not yet returned
   def outstanding
-    rentals.where(returned_at: nil).count
+    rental_items
+      .joins(:rental)
+      .where(rentals: { returned_at: nil })
+      .sum("COALESCE(rental_items.quantity, 1)")
   end
+
 
   # rental_cost stored as integer cents
   def rental_cost_dollars

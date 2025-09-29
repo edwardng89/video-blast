@@ -2,6 +2,22 @@ class Public::RentalsController < ApplicationController
   layout "public"
   before_action :authenticate_user!
 
+  def index
+    base = current_user.rentals
+                      .includes(rental_items: { copy: :movie })
+
+    @status = params[:status].presence
+    filtered =
+      case @status
+      when "outstanding" then base.where(return_date: nil)
+      when "returned"    then base.where.not(return_date: nil)
+      else                    base
+      end
+
+    @rentals = filtered.priority_list
+  end
+
+
   def create
     cart = session[:cart] || {}
     return redirect_to public_cart_path, alert: "Your cart is empty." if cart.blank?
@@ -34,20 +50,29 @@ class Public::RentalsController < ApplicationController
 
   # app/controllers/public/rentals_controller.rb
   def show
-    @rental = current_user.rentals.includes(rental_items: { copy: :movie }).find(params[:id])
+    @rental = current_user.rentals
+                          .includes(rental_items: { copy: :movie })
+                          .find(params[:id])
 
     @items = @rental.rental_items.map do |ri|
       copy = ri.copy
-      unit = copy.rental_cost.to_i
+      next unless copy # skip orphaned rows just in case
+
+      qty  = ri.quantity.to_i
+      qty  = 1 if qty <= 0             # default quantity
+      unit = copy.rental_cost.to_i     # cents; nil-safe
+
       {
         movie: copy.movie,
         copy: copy,
-        quantity: ri.quantity,
+        quantity: qty,
         unit_price_cents: unit,
-        subtotal_cents: unit * ri.quantity
+        subtotal_cents: unit * qty
       }
-    end
-    @total_cents = @items.sum { |it| it[:subtotal_cents] }
+    end.compact
+
+    @total_cents = @items.sum { |it| it[:subtotal_cents].to_i }
   end
+
 
 end

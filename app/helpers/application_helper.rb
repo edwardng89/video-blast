@@ -489,4 +489,15 @@ module ApplicationHelper
   end
   def money_cents(cents) = number_to_currency(cents.to_i / 100.0)
 
+  def status_badge(text)
+    klass =
+      case text
+      when "Overdue"  then "badge text-bg-danger"
+      when "Ongoing"  then "badge text-bg-primary"
+      when "Returned" then "badge text-bg-secondary"
+      else                 "badge text-bg-light text-dark"
+      end
+    content_tag(:span, text, class: klass)
+  end
+
 end
